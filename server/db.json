@@ -1,0 +1,154 @@
+{
+  "climbingGyms":[
+    {
+      "id": 1,
+      "name": "Pirqa",
+      "email": "pirqa@gmail.com",
+      "password": "pirqa123",
+      "district": "Miraflores",
+      "address": "C. José Galvez 360, Miraflores 15074",
+      "phone": "957821898",
+      "logo_url": "https://static.wixstatic.com/media/9a8a1a_dfb332535dab4b75b3698901e58184d2~mv2.png/v1/crop/x_96,y_24,w_747,h_700/fill/w_109,h_102,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/logo%20pirqa%20blanco%20sin%20fondo.png",
+      "type": "Gym"
+    }
+  ],
+  "scalers":[
+    {
+      "id": 1,
+      "first-name": "Dana",
+      "last-name": "Lopez",
+      "email": "scaler1@gmail.com",
+      "password": "scaler123",
+      "district": "Miraflores",
+      "address": "C. José Galvez 360, Los recuerdos 1534",
+      "url_photo": "https://www.sportlife.es/uploads/static/sportlife/upload/images/gallery/5be1cfda0ce694de058b45d8/5be1d5220ee6945962349515-entrevistando-a-margo-hayes-escaladora-y-yoguini.jpg",
+      "phone": "957953764",
+      "type": "Scaler"
+    }
+  ],
+  "favorites":[
+    {
+      "scalerId": 1,
+      "climbingGymId": 1
+    }
+  ],
+  "features":[
+    {
+      "climbingGymId": 1,
+      "type_climb": "Bouldering",
+      "office_hours": "9:00 - 18:00",
+      "days_week": "Lunes a Viernes",
+      "price": 30,
+      "n_routes": "10",
+      "max_height": "20",
+      "rock_type": "Siena",
+      "altitude": "2400",
+      "bolting":["sport climb","bouldering","Tradicional climbing"]
+    }],
+  "categories":[
+    {
+      "id": 1,
+      "name": "Bouldering"
+    },
+    {
+      "id": 2,
+      "name": "Tradicional climbing"
+    },
+    {
+      "id": 3,
+      "name": "Sport climbing"
+    }
+  ],
+  "category_gyms":[
+    {
+      "climbingGymId": 1,
+      "categoryId": 1
+    },
+    {
+      "climbingGymId": 1,
+      "categoryId": 2
+    }
+  ],
+  "new_news":[
+    {
+      "id":1,
+      "climbingGymId": 1,
+      "title": "Nuevo gym en Miraflores",
+      "description": "Nuevo gym en Miraflores",
+      "url_photo": "https://static.wixstatic.com/media/5b17ca_389aff8dd20c4ef1ac4ac2da702cc917~mv2.jpg/v1/fill/w_763,h_1145,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/IMG_0770-10668-min.jpg",
+      "date": "2020-05-20"
+
+    }
+  ],
+  "league":[
+    {
+      "id":1,
+      "name": "Mandracula",
+      "description": "Liga de escaladores del ditrito de Miraflores",
+      "url_photo": "https://4.bp.blogspot.com/-IVzuj5WWCwE/WTlfMGCk10I/AAAAAAAAKhU/szrONM9Q0XEDjTKGQ3X1uiX_CKgEyeLHgCLcB/s1600/scaling-mountain.jpg",
+      "number_participants": "10"
+    }
+  ],
+  "climbers_league":[
+    {
+      "climberId": 1,
+      "leagueId": 1
+    }
+  ],
+  "competitions_league":[
+    {
+      "competition_leagueId": 1,
+      "leagueId": 1,
+      "name": "Climbing Mountain",
+      "date": "2020-05-20",
+      "type": "Climbing"
+    }
+  ],
+  "competitions_ranking":[
+    {
+      "competition_rankingId": 1,
+      "competition_leagueId": 1,
+      "climberId": 1,
+      "position": 1,
+      "score": 10
+    }
+  ],
+  "comments":[
+    {
+      "id": 1,
+      "climbingGymId": 1,
+      "scalerId": 1,
+      "score": 5.5,
+      "comment": "Buen gym",
+      "date": "2020-05-20"
+    }
+  ],
+  "competition_gyms":[
+    {
+      "competition_gymId": 1,
+      "climbingGymId": 1,
+      "name": "Climbing Mountain",
+      "date": "2020-05-20",
+      "time": "10:00",
+      "type": "Climbing",
+      "price": 50
+    }
+  ],
+  "competition_reservation_climbers":[
+    {
+      "competition_gymId": 1,
+      "scalerId": 1,
+      "climberId": 1,
+      "level": "B"
+    }
+  ],
+  "competition_gyms_ranking":[
+    {
+      "competition_gymId": 1,
+      "climberId": 1,
+      "position": 1,
+      "score": 10
+    }
+  ]
+
+}
