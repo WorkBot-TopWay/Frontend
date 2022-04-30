@@ -73,8 +73,8 @@
   "scalers":[
     {
       "id": 1,
-      "first-name": "Dana",
-      "last-name": "Lopez",
+      "first_name": "Dana",
+      "last_name": "Lopez",
       "email": "scaler1@gmail.com",
       "password": "scaler123",
       "district": "Miraflores",
@@ -85,13 +85,13 @@
     },
     {
       "id": 2,
-      "first-name": "Luis",
-      "last-name": "Perez",
+      "first_name": "Luis",
+      "last_name": "Perez",
       "email": "luisperez@gmail.com",
       "password": "luisperez123",
       "district": "San Isidro",
       "address": "C. José Galvez 360, San Isidro 15074",
-      "url_photo": "https://www.sportlife.es/uploads/static/sportlife/upload/images/gallery/5be1cfda0ce694de058b45d8/5be1d5220ee6945962349515-entrevistando-a-margo-hayes-escaladora-y-yoguini.jpg",
+      "url_photo": "https://woguclimbing.com/wp-content/uploads/2018/12/Jonathan-Siegrist-foto-Arjan-De-Kock.jpg",
       "phone": "957953764",
       "type": "Scaler"
     }
@@ -163,11 +163,17 @@
   ],
   "new_news":[
     {
-      "id":1,
       "climbingGymId": 1,
-      "title": "Nuevo gym en Miraflores",
-      "description": "Nuevo gym en Miraflores",
+      "title": "New climber",
+      "description": "A girl with great talent in pirqa",
       "url_photo": "https://static.wixstatic.com/media/5b17ca_389aff8dd20c4ef1ac4ac2da702cc917~mv2.jpg/v1/fill/w_763,h_1145,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/IMG_0770-10668-min.jpg",
+      "date": "2020-05-20"
+    },
+    {
+      "climbingGymId": 1,
+      "title": "Fantastic climber",
+      "description": "New milestone in Pirqa, boy breaks record",
+      "url_photo": "https://outdoorsmagazine.pe/wp-content/uploads/2020/02/Pirqaboulder_opt-1.jpg",
       "date": "2020-05-20"
     }
   ],
@@ -210,8 +216,16 @@
       "id": 1,
       "climbingGymId": 1,
       "scalerId": 1,
-      "score": 5.5,
-      "comment": "Buen gym",
+      "score": 4.5,
+      "comment": "I love this climbing gym <3",
+      "date": "2020-05-20"
+    },
+    {
+      "id": 2,
+      "climbingGymId": 1,
+      "scalerId": 2,
+      "score": 3.5,
+      "comment": "Good climbing gym",
       "date": "2020-05-20"
     }
   ],
@@ -239,6 +253,18 @@
       "scalerId": 1,
       "position": 1,
       "score": 10
+    },
+    {
+      "competition_gymId": 1,
+      "scalerId": 2,
+      "position": 2,
+      "score": 8
+    },
+    {
+      "competition_gymId": 2,
+      "scalerId": 3,
+      "position": 3,
+      "score": 4
     }
   ],
   "images":[

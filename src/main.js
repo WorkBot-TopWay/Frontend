@@ -23,6 +23,12 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
+import OrderList from 'primevue/orderlist';
+import ScrollPanel from 'primevue/scrollpanel';
+import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+import Row from 'primevue/row';
+import TreeTable from 'primevue/treetable';
+
 
 const app = createApp(App)
 
@@ -62,5 +68,11 @@ app.component("TabPanel", TabPanel);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
+app.component("OrderList", OrderList);
+app.component("ScrollPanel", ScrollPanel);
+app.component("ColumnGroup", ColumnGroup);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Row", Row);
+app.component("TreeTable", TreeTable);
 
 app.mount('#app')

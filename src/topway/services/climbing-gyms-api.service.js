@@ -22,5 +22,14 @@ export class ClimbingGymsApiService {
   findFeatureById(id) {
     return http.get(`/climbingGyms/${id}/features`);
   }
+  findNewsById(id) {
+    return http.get(`/climbingGyms/${id}/new_news`);
+  }
+  findCompetitionById(id) {
+    return http.get(`/competition_gyms/${id}?_embed=competition_gyms_ranking`);
+  }
+  findCommentById(id) {
+    return http.get(`/climbingGyms/${id}/comments`);
+  }
 
 }
