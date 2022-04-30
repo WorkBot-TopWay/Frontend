@@ -1,23 +1,26 @@
 import http from "../../core/services/http-common";
 export class ClimbingGymsApiService {
   getAll() {
-    return http.get("/climbing-gyms");
+    return http.get("/climbingGyms");
   }
 
-  get(id) {
-    return http.get(`/climbing-gyms/${id}`);
+  findClimbingById(id) {
+    return http.get(`/climbingGyms/${id}`);
   }
   create(data) {
-    return http.post("/climbing-gyms", data);
+    return http.post("/climbingGyms", data);
   }
   update(id, data) {
-    return http.put(`/climbing-gyms/${id}`, data);
+    return http.put(`/climbingGyms/${id}`, data);
   }
   delete(id) {
-    return http.delete(`/climbing-gyms/${id}`);
+    return http.delete(`/climbingGyms/${id}`);
   }
-  findByTitle(title) {
-    return http.get(`/climbing-gyms?title=${title}`);
+  findAllImagesById(id) {
+    return http.get(`/climbingGyms/${id}/images`);
+  }
+  findFeatureById(id) {
+    return http.get(`/climbingGyms/${id}/features`);
   }
 
 }

@@ -8,7 +8,65 @@
       "district": "Miraflores",
       "address": "C. José Galvez 360, Miraflores 15074",
       "phone": "957821898",
-      "logo_url": "https://static.wixstatic.com/media/9a8a1a_dfb332535dab4b75b3698901e58184d2~mv2.png/v1/crop/x_96,y_24,w_747,h_700/fill/w_109,h_102,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/logo%20pirqa%20blanco%20sin%20fondo.png",
+      "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa.png?alt=media&token=2a189aea-639e-4ab5-a471-fc5e6c5c999b",
+      "type": "Gym"
+    },
+    {
+      "id": 2,
+      "name": "Vertical",
+      "email": "vertical@gmail.com",
+      "password": "Vertical123",
+      "district": "Jesus Maria",
+      "address": "Jr. Nazca cuadra 6 s/n, Depor Plaza, Campo de Marte, Jesús María 15072",
+      "phone": "993387403",
+      "logo_url": "https://escaladavertical.com/wp-content/uploads/2021/12/Logo-Vertical-escalada.jpg",
+      "type": "Gym"
+    },
+    {
+      "id": 3,
+      "name": "Base Camp",
+      "email": "basecamp@gmail.com",
+      "password": "basecamp123",
+      "district": "San Borja",
+      "address": "Av Tomás Marsano 630, Surquillo 15048",
+      "phone": "981265252",
+      "logo_url": "https://pbs.twimg.com/profile_images/1610922913/basecampperu_400x400.jpg",
+      "type": "Gym"
+    }
+  ,
+    {
+      "id": 4,
+      "name": "Bloque",
+      "email": "bloque@gmail.com",
+      "password": "bloque123",
+      "district": "San Isidro",
+      "address": "Av. Dos de Mayo 127, San Isidro 15046",
+      "phone": "987654345",
+      "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/bloque.jpg?alt=media&token=defc9310-56c1-4d8a-894c-b6476b6d6c46",
+      "type": "Gym"
+    },
+
+    {
+      "id": 5,
+      "name": "El Boulder",
+      "email": "boulder@gmail.com",
+      "password": "boulder123",
+      "district": "Barranco",
+      "address": "Peru, Lima, Av. Pedro de Osma 135",
+      "phone": "993789045",
+      "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/bloulder.jpg?alt=media&token=5ecb8dfb-66bb-4f0a-9c2c-131bedd71ecd",
+      "type": "Gym"
+    }
+    ,
+    {
+      "id": 6,
+      "name": "L'Arc - Scouts",
+      "email": "scouts@gmail.com",
+      "password": "scouts123",
+      "district": "Miraflores",
+      "address": "Peru, Lima, Av. Arequipa 5140",
+      "phone": "993098456",
+      "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/scouts.jpg?alt=media&token=ece3a79c-d1a8-438d-95b6-a3fdc748c00b",
       "type": "Gym"
     }
   ],
@@ -24,17 +82,43 @@
       "url_photo": "https://www.sportlife.es/uploads/static/sportlife/upload/images/gallery/5be1cfda0ce694de058b45d8/5be1d5220ee6945962349515-entrevistando-a-margo-hayes-escaladora-y-yoguini.jpg",
       "phone": "957953764",
       "type": "Scaler"
+    },
+    {
+      "id": 2,
+      "first-name": "Luis",
+      "last-name": "Perez",
+      "email": "luisperez@gmail.com",
+      "password": "luisperez123",
+      "district": "San Isidro",
+      "address": "C. José Galvez 360, San Isidro 15074",
+      "url_photo": "https://www.sportlife.es/uploads/static/sportlife/upload/images/gallery/5be1cfda0ce694de058b45d8/5be1d5220ee6945962349515-entrevistando-a-margo-hayes-escaladora-y-yoguini.jpg",
+      "phone": "957953764",
+      "type": "Scaler"
     }
   ],
   "favorites":[
     {
       "scalerId": 1,
       "climbingGymId": 1
+    },
+    {
+      "scalerId": 2,
+      "climbingGymId": 1
+    },
+    {
+      "scalerId": 1,
+      "climbingGymId": 2
+    },
+    {
+      "scalerId": 2,
+      "climbingGymId": 2
     }
+
   ],
   "features":[
     {
       "climbingGymId": 1,
+      "description": "Join an unparalleled experience in a safe environment and surrounded by many people who are passionate about sports. At Pirqa, we dream of being the best promoters of sport climbing and we look forward to seeing what you can achieve by climbing.",
       "type_climb": "Bouldering",
       "office_hours": "9:00 - 18:00",
       "days_week": "Lunes a Viernes",
@@ -67,6 +151,14 @@
     {
       "climbingGymId": 1,
       "categoryId": 2
+    },
+    {
+      "climbingGymId": 2,
+      "categoryId": 1
+    },
+    {
+      "climbingGymId": 2,
+      "categoryId": 2
     }
   ],
   "new_news":[
@@ -77,11 +169,11 @@
       "description": "Nuevo gym en Miraflores",
       "url_photo": "https://static.wixstatic.com/media/5b17ca_389aff8dd20c4ef1ac4ac2da702cc917~mv2.jpg/v1/fill/w_763,h_1145,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/IMG_0770-10668-min.jpg",
       "date": "2020-05-20"
-
     }
   ],
   "league":[
     {
+      "climbingGymId": 1,
       "id":1,
       "name": "Mandracula",
       "description": "Liga de escaladores del ditrito de Miraflores",
@@ -91,13 +183,13 @@
   ],
   "climbers_league":[
     {
-      "climberId": 1,
+      "scalerId": 1,
       "leagueId": 1
     }
   ],
   "competitions_league":[
     {
-      "competition_leagueId": 1,
+      "id": 1,
       "leagueId": 1,
       "name": "Climbing Mountain",
       "date": "2020-05-20",
@@ -106,9 +198,9 @@
   ],
   "competitions_ranking":[
     {
-      "competition_rankingId": 1,
+      "id": 1,
       "competition_leagueId": 1,
-      "climberId": 1,
+      "scalerId": 1,
       "position": 1,
       "score": 10
     }
@@ -125,7 +217,7 @@
   ],
   "competition_gyms":[
     {
-      "competition_gymId": 1,
+      "id": 1,
       "climbingGymId": 1,
       "name": "Climbing Mountain",
       "date": "2020-05-20",
@@ -138,17 +230,38 @@
     {
       "competition_gymId": 1,
       "scalerId": 1,
-      "climberId": 1,
       "level": "B"
     }
   ],
   "competition_gyms_ranking":[
     {
       "competition_gymId": 1,
-      "climberId": 1,
+      "scalerId": 1,
       "position": 1,
       "score": 10
     }
+  ],
+  "images":[
+    {
+      "climbingGymId": 1,
+      "url_photo": [
+        {
+          "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa.png?alt=media&token=2a189aea-639e-4ab5-a471-fc5e6c5c999b",
+          "title": "Pirqa"
+        },
+        {
+        "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa1.jpg?alt=media&token=252681a3-87bd-4372-94b1-0abe59a21e52",
+        "title": "pirqa1"
+        },
+        {
+          "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa2.jpg?alt=media&token=5941c8f6-b325-4b40-88a3-bf0087699384",
+          "title": "pirqa2"
+        },
+        {
+          "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa3.jpg?alt=media&token=a0b7cc53-abc5-4e7c-a976-a4d96eb60ea7",
+          "title": "pirqa3"
+        }
+      ]
+    }
   ]
-
 }
