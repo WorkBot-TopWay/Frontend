@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
+import Vuex from 'vuex'
 // PrimeVue Theme
 import "primevue/resources/themes/saga-blue/theme.css"       //theme
 import 'primevue/resources/primevue.min.css'
@@ -29,11 +30,17 @@ import ColumnGroup from 'primevue/columngroup';     //optional for column groupi
 import Row from 'primevue/row';
 import TreeTable from 'primevue/treetable';
 import Chip from 'primevue/chip';
+import Steps from 'primevue/steps';
+import Dropdown from 'primevue/dropdown';
+import InputNumber from 'primevue/inputnumber';
+import Password from 'primevue/password';
 
 
 const app = createApp(App)
 
 app.use(router)
+
+app.use(Vuex)
 
 app.use(PrimeVue);
 
@@ -77,6 +84,12 @@ app.component("Row", Row);
 app.component("TreeTable", TreeTable);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Chip", Chip);
-
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Steps", Steps);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Dropdown", Dropdown);
+app.component("InputNumber", InputNumber);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Password", Password);
 
 app.mount('#app')

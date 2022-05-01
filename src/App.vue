@@ -2,18 +2,18 @@
 <template>
   <header class="m-0 p-0">
     <div>
-        <Menubar :model="items">
-          <template #start>
-            <img alt="logo" :src="msg" height="60" class="mr-2">
-          </template>
+      <Menubar :model="items">
+        <template #start>
+          <img alt="logo" :src="msg" height="60" class="mr-2">
+        </template>
 
-        </Menubar>
+      </Menubar>
 
     </div>
   </header>
-<main>
-  <RouterView/>
-</main>
+  <main>
+    <RouterView/>
+  </main>
 
 </template>
 
@@ -48,7 +48,7 @@ export default {
         {
           label:'SingUp',
           icon:'pi pi-fw pi-envelope',
-          url:"https://www.google.com/"
+          to:'/singUp'
         },
         {
           label: 'SignOff',

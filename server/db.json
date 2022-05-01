@@ -1,5 +1,5 @@
 {
-  "climbingGyms":[
+  "climbingGyms": [
     {
       "id": 1,
       "name": "Pirqa",
@@ -32,8 +32,7 @@
       "phone": "981265252",
       "logo_url": "https://pbs.twimg.com/profile_images/1610922913/basecampperu_400x400.jpg",
       "type": "Gym"
-    }
-  ,
+    },
     {
       "id": 4,
       "name": "Bloque",
@@ -45,7 +44,6 @@
       "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/bloque.jpg?alt=media&token=defc9310-56c1-4d8a-894c-b6476b6d6c46",
       "type": "Gym"
     },
-
     {
       "id": 5,
       "name": "El Boulder",
@@ -56,8 +54,7 @@
       "phone": "993789045",
       "logo_url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/bloulder.jpg?alt=media&token=5ecb8dfb-66bb-4f0a-9c2c-131bedd71ecd",
       "type": "Gym"
-    }
-    ,
+    },
     {
       "id": 6,
       "name": "L'Arc - Scouts",
@@ -70,7 +67,7 @@
       "type": "Gym"
     }
   ],
-  "scalers":[
+  "scalers": [
     {
       "id": 1,
       "first_name": "Dana",
@@ -94,9 +91,21 @@
       "url_photo": "https://woguclimbing.com/wp-content/uploads/2018/12/Jonathan-Siegrist-foto-Arjan-De-Kock.jpg",
       "phone": "957953764",
       "type": "Scaler"
+    },
+    {
+      "id": 3,
+      "first_name": "Raul",
+      "last_name": "Ventura Robles",
+      "email": "u201714049@upc.edu.pe",
+      "password": "Raul123",
+      "district": "Miraflores",
+      "address": "Arequipa 123",
+      "url_photo": "https://static01.nyt.com/images/2021/10/27/fashion/00NeverTooLate-Climber1-print/merlin_195813327_86edfb46-c771-4e68-826b-70c131fb2352-superJumbo.jpg",
+      "phone": 987654321,
+      "type": "Scaler"
     }
   ],
-  "favorites":[
+  "favorites": [
     {
       "scalerId": 1,
       "climbingGymId": 1
@@ -113,9 +122,8 @@
       "scalerId": 2,
       "climbingGymId": 2
     }
-
   ],
-  "features":[
+  "features": [
     {
       "climbingGymId": 1,
       "description": "Join an unparalleled experience in a safe environment and surrounded by many people who are passionate about sports. At Pirqa, we dream of being the best promoters of sport climbing and we look forward to seeing what you can achieve by climbing.",
@@ -127,9 +135,14 @@
       "max_height": "20",
       "rock_type": "Siena",
       "altitude": "2400",
-      "bolting":["sport climb","bouldering","Tradicional climbing"]
-    }],
-  "categories":[
+      "bolting": [
+        "sport climb",
+        "bouldering",
+        "Tradicional climbing"
+      ]
+    }
+  ],
+  "categories": [
     {
       "id": 1,
       "name": "Bouldering"
@@ -143,7 +156,7 @@
       "name": "Sport climbing"
     }
   ],
-  "category_gyms":[
+  "category_gyms": [
     {
       "climbingGymId": 1,
       "categoryId": 1
@@ -177,7 +190,7 @@
       "categoryId": 1
     }
   ],
-  "new_news":[
+  "new_news": [
     {
       "climbingGymId": 1,
       "title": "New climber",
@@ -193,23 +206,23 @@
       "date": "2020-05-20"
     }
   ],
-  "league":[
+  "league": [
     {
       "climbingGymId": 1,
-      "id":1,
+      "id": 1,
       "name": "Mandracula",
       "description": "Liga de escaladores del ditrito de Miraflores",
       "url_photo": "https://4.bp.blogspot.com/-IVzuj5WWCwE/WTlfMGCk10I/AAAAAAAAKhU/szrONM9Q0XEDjTKGQ3X1uiX_CKgEyeLHgCLcB/s1600/scaling-mountain.jpg",
       "number_participants": "10"
     }
   ],
-  "climbers_league":[
+  "climbers_league": [
     {
       "scalerId": 1,
       "leagueId": 1
     }
   ],
-  "competitions_league":[
+  "competitions_league": [
     {
       "id": 1,
       "leagueId": 1,
@@ -218,7 +231,7 @@
       "type": "Climbing"
     }
   ],
-  "competitions_ranking":[
+  "competitions_ranking": [
     {
       "id": 1,
       "competition_leagueId": 1,
@@ -227,7 +240,7 @@
       "score": 10
     }
   ],
-  "comments":[
+  "comments": [
     {
       "id": 1,
       "climbingGymId": 1,
@@ -245,7 +258,7 @@
       "date": "2020-05-20"
     }
   ],
-  "competition_gyms":[
+  "competition_gyms": [
     {
       "id": 1,
       "climbingGymId": 1,
@@ -256,14 +269,14 @@
       "price": 50
     }
   ],
-  "competition_reservation_climbers":[
+  "competition_reservation_climbers": [
     {
       "competition_gymId": 1,
       "scalerId": 1,
       "level": "B"
     }
   ],
-  "competition_gyms_ranking":[
+  "competition_gyms_ranking": [
     {
       "competition_gymId": 1,
       "scalerId": 1,
@@ -283,7 +296,7 @@
       "score": 4
     }
   ],
-  "images":[
+  "images": [
     {
       "climbingGymId": 1,
       "url_photo": [
@@ -292,8 +305,8 @@
           "title": "Pirqa"
         },
         {
-        "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa1.jpg?alt=media&token=252681a3-87bd-4372-94b1-0abe59a21e52",
-        "title": "pirqa1"
+          "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa1.jpg?alt=media&token=252681a3-87bd-4372-94b1-0abe59a21e52",
+          "title": "pirqa1"
         },
         {
           "url": "https://firebasestorage.googleapis.com/v0/b/fir-dataapp-c6043.appspot.com/o/pirqa2.jpg?alt=media&token=5941c8f6-b325-4b40-88a3-bf0087699384",
