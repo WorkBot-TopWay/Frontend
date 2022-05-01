@@ -28,6 +28,7 @@ import ScrollPanel from 'primevue/scrollpanel';
 import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
 import Row from 'primevue/row';
 import TreeTable from 'primevue/treetable';
+import Chip from 'primevue/chip';
 
 
 const app = createApp(App)
@@ -74,5 +75,8 @@ app.component("ColumnGroup", ColumnGroup);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Row", Row);
 app.component("TreeTable", TreeTable);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Chip", Chip);
+
 
 app.mount('#app')

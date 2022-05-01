@@ -1,9 +1,14 @@
 <template>
-<div class="flex align-content-center justify-content-center m-3">
-
-    <InputText class="mr-2" v-model="tag" placeholder="Search" type="text" style="width: 20em"/>
-    <Button icon="pi pi-search" class="mr-2" />
-
+<div class="flex align-content-center justify-content-center m-3 flex-column">
+<div  class="flex align-content-center justify-content-center">
+  <InputText @keyup.enter="insertShip" class="mr-2" v-model="tag" placeholder="Search" type="text" style="width: 20em"/>
+  <Button @click="insertShip" icon="pi pi-search" class="mr-2" />
+</div>
+  <div class="flex align-content-center justify-content-center">
+  <div v-for="ship of chips" :key="ship" class="flex align-items-center justify-content-center flex-wrap mt-2 mr-1 ml-1">
+    <Chip @click="removeShip(ship)"  :label="ship" class="mb-2" removable/>
+  </div>
+</div>
 </div >
   <div class="flex align-content-end justify-content-center">
     <div class="flex flex-wrap m-3 bg-black-alpha-10" style=" width: 85% ">
@@ -42,6 +47,9 @@ export default {
     return{
       val: 0,
       tag: "",
+      filter:[],
+      filterTo:[],
+      chips: [],
       category: [],
       climbing_gyms:[],
       gyms:[],
@@ -56,31 +64,67 @@ export default {
       if (this.tag === "") {
         return this.climbing_gyms;
       }
-      /* return this.climbing_gyms.filter(
-         (climbing_gym) =>
-           climbing_gym.name.toLowerCase().indexOf(this.tag.toLowerCase()) > -1
-       );
-      return this.climbing_gyms.filter(
-        climbing_gym => climbing_gym.name.toLowerCase().indexOf(this.tag.toLowerCase()) > -1
-      );*/
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.gyms= [];
-      this.category.forEach(value => {
-        if (value.name.toLowerCase() === this.tag.toLowerCase()) {
-          this.climbing_gyms.forEach( element =>{
-            for (const x of element.category_gyms){
-              if(x.categoryId === value.id){
-                this.gyms.push(element);
+      if(this.chips.length <= 0){
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.gyms= [];
+      }
+      if(this.chips.length === 0){
+        console.log("/////////////////////////////////////// === 0");
+        this.category.forEach(value => {
+          if (value.name.toLowerCase() === this.tag.toLowerCase()) {
+            this.climbing_gyms.forEach( element =>{
+              for (const x of element.category_gyms){
+                if(x.categoryId === value.id){
+                  this.gyms.push(element);
+                }
               }
+            });
+          }
+        });
+      }
+      if(this.chips.length >= 2){
+        console.log("///////////////////////////////////////> 1");
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.filter = [];
+          this.category.forEach(value => {
+            if (value.name.toLowerCase() === this.chips[this.chips.length-1].toLowerCase()) {
+              this.gyms.forEach( element =>{
+                for (const x of element.category_gyms){
+                  if(x.categoryId === value.id){
+                    this.filter.push(element);
+                  }
+                }
+              });
             }
           });
-        }
-      });
-      if(this.gyms.length != 0){
-       return this.gyms
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.gyms = this.filter;
+        return new Set(this.gyms);
       }
-      console.log(this.gyms);
-      return this.climbing_gyms;
+      if(this.chips.length >0){
+        console.log("//////////////////////////////////////// >0");
+        this.chips.forEach(chip => {
+          this.category.forEach(value => {
+            if (value.name.toLowerCase() === chip.toLowerCase()) {
+              this.climbing_gyms.forEach( element =>{
+                for (const x of element.category_gyms){
+                  if(x.categoryId === value.id){
+                    this.gyms.push(element);
+                  }
+                }
+              });
+            }
+          });
+        });
+        return new Set(this.gyms);
+      }
+      if(this.gyms.length > 0){
+       return new Set(this.gyms);
+      }else {
+        return this.climbing_gyms.filter(
+          climbing_gym => climbing_gym.name.toLowerCase().indexOf(this.tag.toLowerCase()) > -1
+        );
+      }
     }
   }
     ,
@@ -132,20 +176,21 @@ export default {
         console.log(id, "See more");
         this.$router.push(`/features/${id}/${name}`);
       },
-      hasCategory(category, gym){
-       this.category.forEach(value => {
-         if (value.name.toLowerCase() === category.toLowerCase()) {
-           gym.forEach( element =>{
-             for (const x of element.category_gyms){
-                    if(x.categoryId === value.id){
-                      return true;
-                    }
-             }
-           });
-         }
-       });
-       return false;
-      }
+     insertShip(){
+        if(this.tag != "") {
+          this.chips.push(this.tag);
+        }
+        this.tag = " ";
+        console.log(this.chips);
+        //remove chip removed with remove event
+     },
+     removeShip(word){
+        this.chips.forEach( (value, index) => {
+          if(value === word){
+            this.chips.splice(index, 1);
+          }
+        });
+     }
     }
   };
 
