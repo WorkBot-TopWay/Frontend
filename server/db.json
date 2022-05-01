@@ -159,6 +159,26 @@
     {
       "climbingGymId": 2,
       "categoryId": 2
+    },
+    {
+      "climbingGymId": 2,
+      "categoryId": 3
+    },
+    {
+      "climbingGymId": 3,
+      "categoryId": 1
+    },
+    {
+      "climbingGymId": 3,
+      "categoryId": 2
+    },
+    {
+      "climbingGymId": 3,
+      "categoryId": 3
+    },
+    {
+      "climbingGymId": 4,
+      "categoryId": 1
     }
   ],
   "new_news":[

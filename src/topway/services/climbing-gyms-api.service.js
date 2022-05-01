@@ -1,7 +1,7 @@
 import http from "../../core/services/http-common";
 export class ClimbingGymsApiService {
   getAll() {
-    return http.get("/climbingGyms");
+    return http.get("/climbingGyms/?_embed=category_gyms");
   }
 
   findClimbingById(id) {
@@ -31,5 +31,10 @@ export class ClimbingGymsApiService {
   findCommentById(id) {
     return http.get(`/climbingGyms/${id}/comments`);
   }
-
+  findCategoryById(id) {
+    return http.get(`climbingGyms/${id}/category_gyms`);
+  }
+  getAllCategory() {
+    return http.get("/categories");
+  }
 }
