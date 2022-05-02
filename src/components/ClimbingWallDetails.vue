@@ -290,6 +290,7 @@
         justify-content-center
         flex-column
       "
+      v-if="informationObject(ranking)"
       style="width: 25%"
     >
       <h1 class="font text-xl font-semibold text-center">Ranking section</h1>
@@ -339,7 +340,7 @@
             </p>
           </div>
         </div>
-        <div class="score flex flex-column" style="width: 25%">
+        <div class="score flex flex-column" style="width: 25%" >
           <div
             class="flex align-content-center justify-content-center button"
             v-for="rank of ranking"
@@ -352,6 +353,13 @@
           </div>
         </div>
       </div>
+
+
+    </div>
+    <div class="flex justify-content-center align-items-start" v-else style="width: 15%">
+      <p class="font text-justify text-base font-semibold" >
+        Does not contain ranking
+      </p>
     </div>
   </div>
 </template>
@@ -446,7 +454,7 @@ export default {
     console.log("ranking");
     /////////// Ranking Climbing Gym Data  ////////////
     this.climbing_gym_Service
-      .findCompetitionById(1)
+      .findCompetitionById(this.id)
       .then((response) => {
         this.competition = response.data;
         console.log(this.competition);
