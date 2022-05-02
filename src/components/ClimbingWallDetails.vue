@@ -94,11 +94,19 @@
         }}</span>
       </div>
       <div class="m-3">
-        <p class="font text-justify text-base font-medium line-height-2">
+        <p v-if="informationObject(feature)" class="font text-justify text-base font-medium line-height-2">
           {{ feature.description }}
         </p>
+        <p v-else class="font text-justify text-base font-medium line-height-2">
+          No description
+        </p>
       </div>
+      <div class="flex align-content-center justify-content-center">
 
+        <div v-for="tag of word" :key="tag" class="flex align-items-center justify-content-center flex-wrap mt-2 mr-1 ml-1">
+          <Tag class="mr-2" severity="success" :value="tag"></Tag>
+        </div>
+      </div>
       <TabView class="mr-4 ml-4">
         <TabPanel>
           <template #header>
@@ -357,6 +365,8 @@ export default {
     return {
       id: 0,
       cont: 0,
+      word: [],
+      tags: [],
       data: [],
       competition: {},
       participants: [],
@@ -476,10 +486,33 @@ export default {
       .catch((e) => {
         console.log(e);
       });
+    /////////// Tag Climbing Gym Data  ////////////
+    this.climbing_gym_Service
+      .findClimbingById(this.id)
+      .then((response) => {
+        this.tags = response.data.category_gyms;
+        console.log(this.tags, "tags Here");
+        this.tags.forEach((element) => {
+          this.climbing_gym_Service
+            .findCategoryNameById(element.categoryId)
+            .then((response) => {
+              console.log(response.data.name, "Data here");
+              this.word.push(response.data.name);
+              console.log(this.word, "Word here");
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    ///////////////////////////////////////////
   },
   methods: {
     informationObject(object) {
-      if (Object.entries(object).length === 0) {
+      if ( object === undefined || object === null||Object.entries(object).length === 0) {
         return false;
       }
       return true;

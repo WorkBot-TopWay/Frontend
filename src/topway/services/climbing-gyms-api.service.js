@@ -5,7 +5,7 @@ export class ClimbingGymsApiService {
   }
 
   findClimbingById(id) {
-    return http.get(`/climbingGyms/${id}`);
+    return http.get(`/climbingGyms/${id}?_embed=category_gyms`);
   }
   create(data) {
     return http.post("/climbingGyms", data);
@@ -36,5 +36,8 @@ export class ClimbingGymsApiService {
   }
   getAllCategory() {
     return http.get("/categories");
+  }
+  findCategoryNameById(id) {
+    return http.get(`/categories/${id}`);
   }
 }

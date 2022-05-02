@@ -34,6 +34,7 @@ import Steps from 'primevue/steps';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import Password from 'primevue/password';
+import Tag from 'primevue/tag';
 
 
 const app = createApp(App)
@@ -91,5 +92,7 @@ app.component("Dropdown", Dropdown);
 app.component("InputNumber", InputNumber);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Password", Password);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Tag", Tag);
 
 app.mount('#app')
