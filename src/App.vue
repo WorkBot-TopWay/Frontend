@@ -97,11 +97,10 @@ export default {
         this.items[3].visible=false
         this.items[4].visible=false
         this.items[5].visible=true
+        this.service_Scaler.findById(this.store.state.id).then(response=>{
+          this.user=response.data
+        });
       }
-
-  this.service_Scaler.findById(this.store.state.id).then(response=>{
-    this.user=response.data
-  });
       return this.store.state.isLogin
     }
   }
