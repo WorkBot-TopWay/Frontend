@@ -1,11 +1,11 @@
 import http from "../../core/services/http-common";
 export class ClimbingGymsApiService {
   getAll() {
-    return http.get("/climbingGyms");
+    return http.get("/climbingGyms/?_embed=category_gyms");
   }
 
   findClimbingById(id) {
-    return http.get(`/climbingGyms/${id}`);
+    return http.get(`/climbingGyms/${id}?_embed=category_gyms`);
   }
   create(data) {
     return http.post("/climbingGyms", data);
@@ -22,5 +22,22 @@ export class ClimbingGymsApiService {
   findFeatureById(id) {
     return http.get(`/climbingGyms/${id}/features`);
   }
-
+  findNewsById(id) {
+    return http.get(`/climbingGyms/${id}/new_news`);
+  }
+  findCompetitionById(id) {
+    return http.get(`/competition_gyms/${id}?_embed=competition_gyms_ranking`);
+  }
+  findCommentById(id) {
+    return http.get(`/climbingGyms/${id}/comments`);
+  }
+  findCategoryById(id) {
+    return http.get(`climbingGyms/${id}/category_gyms`);
+  }
+  getAllCategory() {
+    return http.get("/categories");
+  }
+  findCategoryNameById(id) {
+    return http.get(`/categories/${id}`);
+  }
 }

@@ -18,7 +18,7 @@ export class ScalerApiService{
     return http.delete(`/scalers/${id}`);
   }
   findById(id) {
-    return http.get(`/scalers?id=${id}`);
+    return http.get(`/scalers/${id}`);
   }
   getAllFavorites(id) {
     return http.get(`/scalers/${id}/?_embed=favorites`);

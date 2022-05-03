@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
+import Vuex from 'vuex'
 // PrimeVue Theme
 import "primevue/resources/themes/saga-blue/theme.css"       //theme
 import 'primevue/resources/primevue.min.css'
@@ -23,11 +24,28 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
+
 import Password from "primevue/password";
+
+import OrderList from 'primevue/orderlist';
+import ScrollPanel from 'primevue/scrollpanel';
+import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+import Row from 'primevue/row';
+import TreeTable from 'primevue/treetable';
+import Chip from 'primevue/chip';
+import Steps from 'primevue/steps';
+import Dropdown from 'primevue/dropdown';
+import InputNumber from 'primevue/inputnumber';
+import Password from 'primevue/password';
+import Tag from 'primevue/tag';
+
+
 
 const app = createApp(App)
 
 app.use(router)
+
+app.use(Vuex)
 
 app.use(PrimeVue);
 
@@ -65,5 +83,22 @@ app.component("TabPanel", TabPanel);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
+app.component("OrderList", OrderList);
+app.component("ScrollPanel", ScrollPanel);
+app.component("ColumnGroup", ColumnGroup);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Row", Row);
+app.component("TreeTable", TreeTable);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Chip", Chip);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Steps", Steps);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Dropdown", Dropdown);
+app.component("InputNumber", InputNumber);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Password", Password);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Tag", Tag);
 
 app.mount('#app')
