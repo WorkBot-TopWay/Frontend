@@ -11,5 +11,6 @@ export const store = new Vuex.Store({
         url_photo: '',
         phone: 0,
         type: '',
-    },
+        isLogin: false
+    }
 });

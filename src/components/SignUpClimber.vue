@@ -100,6 +100,7 @@ export default {
         url_photo: '',
         phone: 0,
         type: '',
+        status: false
       }
     }
   },
@@ -148,7 +149,6 @@ export default {
       else
         delete this.validationErrors['first_name'];
 
-
       if (!this.last_name.trim())
         this.validationErrors['last_name'] = true;
       else
@@ -194,7 +194,8 @@ export default {
     },
     showSuccess() {
       this.$toast.add({severity:'success', summary: 'Success Message', detail:'Message Content', life: 3000});
-    }
+    },
+
   }
 
 };

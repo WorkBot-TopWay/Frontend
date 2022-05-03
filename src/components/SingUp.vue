@@ -29,7 +29,7 @@
       <template v-slot:footer>
         <div class="grid grid-nogutter justify-content-between">
           <i></i>
-          <Button label="Next" @click="nextPage()" icon="pi pi-angle-right" iconPos="right" />
+          <Button label="Next" @click="nextPage(),showError()" icon="pi pi-angle-right" iconPos="right" />
         </div>
       </template>
     </Card>
@@ -40,6 +40,7 @@
 import { ScalerApiService } from "../topway/services/scaler-api.service";
 
 import { store } from "../store";
+import { useToast } from "primevue/usetoast";
 
 export default {
   name: "SingUp",
@@ -118,7 +119,12 @@ export default {
       if (this.selectedType && event.value) {
         this.selectedType=event.value;
       }
-    }
+    },
+    showError() {
+      console.log("Error, llego a Toast");
+      const toast = useToast();
+      if(!this.validateForm()) toast.add({severity:'error', summary: 'Error Message', detail:'Message Content', life: 3000});
+    },
   }
 };
 </script>

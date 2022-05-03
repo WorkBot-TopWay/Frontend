@@ -40,6 +40,7 @@
 
 <script>
 import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
+import { store } from "../store";
 
 export default {
   name: "ClimbingGym",
@@ -50,6 +51,8 @@ export default {
       filter:[],
       filterTo:[],
       chips: [],
+      store:store,
+      status:false,
       category: [],
       climbing_gyms:[],
       gyms:[],
@@ -59,6 +62,11 @@ export default {
     }
   },
   computed: {
+    isLoggedIn() {
+      console.log(this.store.state.isLogin,"isLogin");
+      return this.store.state.isLogin;
+    },
+
     // eslint-disable-next-line vue/no-async-in-computed-properties,vue/no-dupe-keys,vue/return-in-computed-property
     filterByCategory() {
       if (this.tag === "") {
@@ -129,6 +137,7 @@ export default {
   }
     ,
     mounted() {
+      console.log(this.isLoggedIn);
       this.climbing_gym_Service.getAll().then(response => {
         this.climbing_gyms = response.data;
         console.log(this.climbing_gyms);

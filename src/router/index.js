@@ -5,6 +5,7 @@ import ClimbingGym from "../components/ClimbingGym.vue"
 import ClimbingWallDetails from "../components/ClimbingWallDetails.vue";
 import SingUp from "../components/SingUp.vue";
 import SignUpClimber from "../components/SignUpClimber.vue";
+import LogIn from "../components/LogIn.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/singUpClimber',
       name: 'singUpClimber',
       component: SignUpClimber
+    },
+    {
+      path: '/LogIn',
+      name: 'LogIn',
+      component: LogIn
     }
     /* ,
     {

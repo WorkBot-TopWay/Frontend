@@ -103,6 +103,18 @@
       "url_photo": "https://static01.nyt.com/images/2021/10/27/fashion/00NeverTooLate-Climber1-print/merlin_195813327_86edfb46-c771-4e68-826b-70c131fb2352-superJumbo.jpg",
       "phone": 987654321,
       "type": "Scaler"
+    },
+    {
+      "id": 4,
+      "first_name": "Sho",
+      "last_name": "Lee",
+      "email": "miguelalfaro2017@gmail.com",
+      "password": "jkasdbfj",
+      "district": "San Borja",
+      "address": "Av arequipa 234",
+      "url_photo": "https://media.istockphoto.com/photos/rock-climber-clinging-to-a-cliff-picture-id527531592?k=20&m=527531592&s=612x612&w=0&h=TMVZolAwrV-embcTC5r_3tN_OqoKw1EsPgDsHmVJseo=",
+      "phone": 987567876,
+      "type": "Scaler"
     }
   ],
   "favorites": [

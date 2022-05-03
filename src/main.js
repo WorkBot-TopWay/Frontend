@@ -35,6 +35,7 @@ import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import Password from 'primevue/password';
 import Tag from 'primevue/tag';
+import Toast from "primevue/toast";
 
 
 const app = createApp(App)
@@ -94,5 +95,7 @@ app.component("InputNumber", InputNumber);
 app.component("Password", Password);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Tag", Tag);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Toast", Toast);
 
 app.mount('#app')
