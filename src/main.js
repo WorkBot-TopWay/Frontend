@@ -23,6 +23,7 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
+import Password from "primevue/password";
 
 const app = createApp(App)
 
@@ -41,6 +42,8 @@ app.component("DataTable", DataTable);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("column", Column);
 app.component("InputText", InputText);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component( "Password", Password)
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Button", Button);
 // eslint-disable-next-line vue/multi-word-component-names

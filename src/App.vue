@@ -43,7 +43,7 @@ export default {
         {
           label:'LogIn',
           icon:'pi pi-fw pi-sign-in',
-          url:"https://www.google.com/"
+          url:"/login"
         },
         {
           label:'SingUp',
