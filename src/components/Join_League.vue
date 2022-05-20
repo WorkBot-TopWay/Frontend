@@ -6,7 +6,7 @@
   </div >
   <div v-if="filterByLeague.length>0" class="flex align-content-end justify-content-center">
     <div class="flex flex-wrap m-3 bg-black-alpha-10" style=" width: 85% ">
-      <Card class="m-3 col-12 md:col-6 lg:col-3" v-for="league of filterByLeague" :key="league" style="width:17em; ">
+      <Card class="m-3 col-12 md:col-6 lg:col-3" v-for="league of filterByLeague" :key="league.id" style="width:17em; ">
 
         <template #header>
           <img  alt="user header" :src="league.url_photo">
@@ -25,7 +25,13 @@
         </template>
 
         <template #footer>
-          <Button @click="statusRequest(requestToJoinLeague(league.id),league.id)" class="p-button-secondary" label="Primary" >{{ requestToJoinLeague(league.id) }}</Button>
+          <div v-if="youAreAlreadyPart(league.id)">
+            <Button @click="youAreAlreadyAMember()" class="p-button-secondary" label="Primary" >You are already a member</Button>
+          </div>
+          <div v-else>
+            <Button @click="statusRequest(requestToJoinLeague(league.id),league.id)" label="Primary" > {{requestToJoinLeague(league.id)}} </Button>
+          </div>
+
         </template>
       </Card>
     </div>
@@ -110,19 +116,23 @@ created() {
              this.$router.go(0);
            });
          }
-        } else if (status === "You are already a member") {
-          alert("You are already a member");
         }
      },
-    requestToJoinLeague(id){
+    youAreAlreadyAMember(){
+      alert("You are already a member");
+    },
+    youAreAlreadyPart(id){
+        console.log(this.listUserLeagues, "listUserLeagues");
       for(let index of this.listUserLeagues){
-        if(this.localTopWay.state.userInfo.id === index.scalerId && index.leagueId === id){
-          this.flag=2;
-          break;
-        }else {
-          this.flag=0;
+        if(this.localTopWay.state.userInfo.id == index.scalerId && index.leagueId == id){
+
+          return true;
         }
       }
+      return false;
+    },
+    requestToJoinLeague(id){
+
       for (let index of this.request) {
         if(index.leagueId === id && index.scalerId === this.localTopWay.state.userInfo.id){
           this.flag=1;

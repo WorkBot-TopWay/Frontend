@@ -138,8 +138,10 @@ export default {
     ,
     mounted() {
       console.log(this.isLoggedIn);
+
       this.climbing_gym_Service.getAll().then(response => {
         this.climbing_gyms = response.data;
+        console.log(this.climbing_gyms);
         console.log(this.climbing_gyms);
       });
       this.climbing_gym_Service.getAllCategory().then(response => {
@@ -147,7 +149,6 @@ export default {
         console.log(this.category);
       });
     },
-
     methods: {
       seeMore(id, name) {
         console.log(id, "See more");
