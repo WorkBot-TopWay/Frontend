@@ -36,6 +36,7 @@ import InputNumber from 'primevue/inputnumber';
 import Password from 'primevue/password';
 import Tag from 'primevue/tag';
 import Toast from "primevue/toast";
+import Dialog from 'primevue/dialog';
 
 
 const app = createApp(App)
@@ -55,7 +56,7 @@ app.component("Toolbar", Toolbar);
 app.component("Image", Image);
 app.component("DataTable", DataTable);
 // eslint-disable-next-line vue/multi-word-component-names
-app.component("column", Column);
+app.component("Column", Column);
 app.component("InputText", InputText);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Button", Button);
@@ -97,5 +98,7 @@ app.component("Password", Password);
 app.component("Tag", Tag);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Toast", Toast);
+// eslint-disable-next-line vue/multi-word-component-names
+app.component("Dialog", Dialog);
 
 app.mount('#app')

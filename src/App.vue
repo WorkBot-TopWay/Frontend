@@ -6,34 +6,34 @@
         <template #start>
           <img alt="logo" :src="msg" height="60" class="mr-2">
         </template>
+
+
         <template #end>
-          <Button v-if="!status" @click="isLogin"><i class="pi pi-replay mr-2"></i></Button>
-          <div v-else
+          <div v-if="localTopWay.state.isLogin"
             class="flex justify-content-center align-items-center m-1"
             style="width: 100%"
           >
             <Avatar
-              :image="user.url_photo"
+              :image="localTopWay.state.userInfo.url_photo"
               class="mr-2"
               size="xlarge"
               shape="circle"
             />
-            <span class="text-center text-900  font-semibold">{{user.first_name }} {{user.last_name }}</span>
+            <span class="text-center text-900  font-semibold">{{localTopWay.state.userInfo.first_name }} {{localTopWay.state.userInfo.last_name }}</span>
           </div>
         </template>
       </Menubar>
     </div>
   </header>
   <main>
-    <RouterView/> pi-replay
+    <RouterView/>
   </main>
 
 </template>
 
 <script>
 import { store } from "./store";
-import { ScalerApiService } from "./topway/services/scaler-api.service";
-
+import { LocalStoreTopWay } from "./LocalStore/LocalStoreTopWay";
 export default {
   name: 'App',
   data:()=> {
@@ -42,9 +42,8 @@ export default {
       store:store,
       status:false,
       user:{},
-      service_Scaler: new ScalerApiService(),
+      localTopWay: LocalStoreTopWay,
       items: [
-
         {
           label:'Home',
           icon:'pi pi-fw pi-home',
@@ -53,7 +52,7 @@ export default {
         {
           label: 'Favorite',
           icon: 'pi pi-fw pi-star',
-          url:"https://www.google.com/",
+          to: '/Favorite',
           visible: false
         },
         {
@@ -77,31 +76,48 @@ export default {
         {
           label: 'SignOff',
           icon: 'pi pi-fw pi-power-off ',
-          url: "https://topway-bd33d.web.app/",
-          visible:false
-
+          visible:false,
+          command: () => {
+            localStorage.removeItem('user');
+            localStorage.clear();
+          },
+          url: 'http://localhost:3001/' //cambia a la ruta del servidor
         }]
     }
   },
+  watch: {
+    localTopWay: {
+      handler: function () {
+        if (this.localTopWay.state.isLogin) {
+          this.items[1].visible=true
+          this.items[2].visible=true
+          this.items[3].visible=false
+          this.items[4].visible=false
+          this.items[5].visible=true
+        }
+      },
+      deep: true
+    }
+  },
   mounted() {
+    if(localStorage.user){
+      this.localTopWay.state.userInfo = JSON.parse(localStorage.user);
+      this.localTopWay.state.isLogin = true;
+    }
     console.log(this.store.state.isLogin)
-
+    this.isLogin();
   },
   methods:{
     isLogin() {
-      this.status= this.store.state.isLogin
-      console.log(this.store.state.isLogin,"Llega el dato")
-      if(this.store.state.isLogin){
+      this.status= this.localTopWay.state.isLogin
+      console.log(this.localTopWay.state.isLogin,"Arrival here")
+      if(this.localTopWay.state.isLogin){
         this.items[1].visible=true
         this.items[2].visible=true
         this.items[3].visible=false
         this.items[4].visible=false
         this.items[5].visible=true
-        this.service_Scaler.findById(this.store.state.id).then(response=>{
-          this.user=response.data
-        });
       }
-      return this.store.state.isLogin
     }
   }
 }

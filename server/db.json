@@ -115,24 +115,41 @@
       "url_photo": "https://media.istockphoto.com/photos/rock-climber-clinging-to-a-cliff-picture-id527531592?k=20&m=527531592&s=612x612&w=0&h=TMVZolAwrV-embcTC5r_3tN_OqoKw1EsPgDsHmVJseo=",
       "phone": 987567876,
       "type": "Scaler"
+    },
+    {
+      "id": 5,
+      "first_name": "Luis",
+      "last_name": "Acosta",
+      "email": "luisacosta@gmail.com",
+      "password": "luis123",
+      "district": "Miraflores",
+      "address": "Av arequipa123",
+      "url_photo": "https://static.dw.com/image/58602802_303.jpg",
+      "phone": 987123456,
+      "type": "Scaler",
+      "status": false
     }
   ],
   "favorites": [
     {
+      "id": 1,
       "scalerId": 1,
       "climbingGymId": 1
     },
     {
-      "scalerId": 2,
-      "climbingGymId": 1
-    },
-    {
+      "id": 3,
       "scalerId": 1,
       "climbingGymId": 2
     },
     {
+      "id": 4,
       "scalerId": 2,
       "climbingGymId": 2
+    },
+    {
+      "id": 5,
+      "scalerId": 2,
+      "climbingGymId": 1
     }
   ],
   "features": [
@@ -200,6 +217,10 @@
     {
       "climbingGymId": 4,
       "categoryId": 1
+    },
+    {
+      "climbingGymId": 4,
+      "categoryId": 2
     }
   ],
   "new_news": [
@@ -221,17 +242,55 @@
   "league": [
     {
       "climbingGymId": 1,
+      "scalerId": 1,
       "id": 1,
       "name": "Mandracula",
       "description": "Liga de escaladores del ditrito de Miraflores",
       "url_photo": "https://4.bp.blogspot.com/-IVzuj5WWCwE/WTlfMGCk10I/AAAAAAAAKhU/szrONM9Q0XEDjTKGQ3X1uiX_CKgEyeLHgCLcB/s1600/scaling-mountain.jpg",
       "number_participants": "10"
+    },
+    {
+      "id": 2,
+      "scalerId": 2,
+      "climbingGymId": 1,
+      "name": "Pircario",
+      "description": "The best group",
+      "url_photo": "https://mejorconsalud.as.com/wp-content/uploads/2021/04/escalada-roca.jpg",
+      "number_participants": 3
+    }
+  ],
+  "requests": [
+    {
+      "id": 1,
+      "leagueId": 2,
+      "scalerId": 3,
+      "status": "Pending"
     }
   ],
   "climbers_league": [
     {
+      "id": 1,
       "scalerId": 1,
-      "leagueId": 1
+      "leagueId": 1,
+      "climbingGymId": 1
+    },
+    {
+      "id": 2,
+      "scalerId": 2,
+      "leagueId": 2,
+      "climbingGymId": 1
+    },
+    {
+      "id": 4,
+      "scalerId": 4,
+      "leagueId": 2,
+      "climbingGymId": 1
+    },
+    {
+      "id": 5,
+      "scalerId": 5,
+      "leagueId": 2,
+      "climbingGymId": 1
     }
   ],
   "competitions_league": [
@@ -240,16 +299,86 @@
       "leagueId": 1,
       "name": "Climbing Mountain",
       "date": "2020-05-20",
-      "type": "Climbing"
-    }
-  ],
-  "competitions_ranking": [
+      "type": "Climbing",
+      "competitions_ranking": [
+        {
+          "id": 1,
+          "scalerId": 1,
+          "score": 10
+        }
+      ]
+    },
     {
-      "id": 1,
-      "competition_leagueId": 1,
-      "scalerId": 1,
-      "position": 1,
-      "score": 10
+      "id": 2,
+      "leagueId": 2,
+      "name": "The best Competition",
+      "date": "2022-05-20T09:15:08.873Z",
+      "type": "Bouldering",
+      "competitions_ranking": [
+        {
+          "id": 0,
+          "scalerId": 2,
+          "score": 45
+        },
+        {
+          "id": 1,
+          "scalerId": 4,
+          "score": 35
+        },
+        {
+          "id": 2,
+          "scalerId": 5,
+          "score": 80
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "leagueId": 2,
+      "name": "Competition Example",
+      "date": "2022-05-20T11:21:04.426Z",
+      "type": "Bouldering",
+      "competitions_ranking": [
+        {
+          "id": 0,
+          "scalerId": 2,
+          "score": 20
+        },
+        {
+          "id": 1,
+          "scalerId": 4,
+          "score": 67
+        },
+        {
+          "id": 2,
+          "scalerId": 5,
+          "score": 38
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "leagueId": 2,
+      "name": "TheBestWin",
+      "date": "2022-05-20T17:08:13.496Z",
+      "type": "Tradicional climbing",
+      "competitions_ranking": [
+        {
+          "id": 0,
+          "scalerId": 2,
+          "score": 23
+        },
+        {
+          "id": 1,
+          "scalerId": 4,
+          "score": 45
+        },
+        {
+          "id": 2,
+          "scalerId": 5,
+          "score": 47
+        }
+      ]
     }
   ],
   "comments": [

@@ -68,10 +68,6 @@ export default {
       store: store,
     }
   },
-  setup(){
-
-  },
-  beforeMount(){},
   mounted() {
     this.scaler_Service.getAll().then(response => {
       this.user = response.data;

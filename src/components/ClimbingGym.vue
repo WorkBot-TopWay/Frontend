@@ -149,38 +149,6 @@ export default {
     },
 
     methods: {
-      findIndexById(id) {
-        return this.climbing_gyms.findIndex(climbing_gym => climbing_gym.id === id);
-      },
-      saveClimbingGym() {
-        if (this.climbing_gyms.id) {
-          this.climbing_gym_Service.update(this.climbing_gym.id, this.climbing_gym)
-            .then(response => {
-              this.climbing_gyms[this.findIndexById(this.climbing_gym.id)] =
-                this.climbing_gym;
-              this.$toast.add({
-                severity: "success",
-                summary: "Successful",
-                detail: "Climbing Gyms Updated",
-                life: 3000,
-              });
-              console.log(response);
-            });
-        }
-      },
-      createClimbingGym() {
-        this.climbing_gym_Service.create(this.climbing_gym)
-          .then(response => {
-            this.climbing_gyms.push(this.climbing_gym);
-            this.$toast.add({
-              severity: "success",
-              summary: "Successful",
-              detail: "Climbing Gyms Created",
-              life: 3000,
-            });
-            console.log(response);
-          });
-      },
       seeMore(id, name) {
         console.log(id, "See more");
         this.$router.push(`/features/${id}/${name}`);

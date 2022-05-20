@@ -181,16 +181,10 @@ export default {
     createClimbing(climber){
       this.scaler_Service.create(climber)
           .then(response => {
-            this.$toast.add({
-              severity: "success",
-              summary: "Successful",
-              detail: "Climbing Created",
-              life: 3000,
-            });
             console.log(response);
           }).catch((e) => {
         console.log(e);
-      });;
+      });
     },
     showSuccess() {
       this.$toast.add({severity:'success', summary: 'Success Message', detail:'Message Content', life: 3000});

@@ -35,6 +35,7 @@
 import { ScalerApiService } from "../topway/services/scaler-api.service";
 import { store } from "../store";
 import { useToast } from "primevue/usetoast";
+import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
 
 export default {
   name: "LogIn",
@@ -51,6 +52,7 @@ export default {
       email: '',
       re:"",
       store: store,
+      localTopWay: LocalStoreTopWay
     }
   },
   setup(){
@@ -67,8 +69,9 @@ export default {
       if (this.validateForm()) {
         this.user.forEach(element => {
           if (element.email == this.email&&element.password == this.password) {
-            this.store.state.isLogin = true;
-            this.store.state.id = element.id;
+            this.localTopWay.state.isLogin = true;
+            this.localTopWay.state.userInfo = element;
+            localStorage.user = JSON.stringify(element);
             this.$router.push('/');
           }
         });

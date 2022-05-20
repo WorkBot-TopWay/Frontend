@@ -2,18 +2,20 @@
   <Toolbar>
     <template #start>
       <Button
-        label="My league"
-        icon="pi pi-heart"
+        label="My leagues"
+        icon="pi pi-star-fill"
         class="p-button-success mr-2"
+        @click="myLeague(climbing_gym.name,id)"
       />
-      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning" />
+      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning"  />
     </template>
     <template #end>
-      <Button label="New league" icon="pi pi-plus" class="mr-2" />
+      <Button label="New league" icon="pi pi-plus" class="mr-2" @click="newLeague(climbing_gym.name, id)" />
       <Button
         label="Join league"
         icon="pi pi-reply"
         class="p-button-secondary mr-2"
+        @click="joinLeague(climbing_gym.name,id)"
       />
     </template>
   </Toolbar>
@@ -101,9 +103,13 @@
           No description
         </p>
       </div>
+      <div class="flex justify-content-center mt-2 mb-2">
+        <Button v-if="!listFavorites()" label="Follow" icon="pi pi-heart" class="p-button-help mr-2" @click="follow()"/>
+        <Button v-else label="Unfollow" icon="pi pi-heart-fill" class="p-button-help mr-2" @click="unfollow()"/>
+      </div>
       <div class="flex align-content-center justify-content-center">
 
-        <div v-for="tag of word" :key="tag" class="flex align-items-center justify-content-center flex-wrap mt-2 mr-1 ml-1">
+        <div v-for="tag of word" :key="tag" class="flex align-items-center justify-content-center flex-wrap mt-2 mr-1 ml-1 mb-2">
           <Tag class="mr-2" severity="success" :value="tag"></Tag>
         </div>
       </div>
@@ -162,7 +168,7 @@
         <TabPanel>
           <template #header>
             <i class="pi pi-info-circle mr-2"></i>
-            <span>Features</span>
+            <span>Description</span>
           </template>
           <div v-if="informationObject(feature)">
             <p class="font text-justify text-base font-semibold">
@@ -367,15 +373,18 @@
 <script>
 import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
 import { ScalerApiService } from "../topway/services/scaler-api.service";
+import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
 export default {
   name: "ClimbingWallDetails",
   data: () => {
     return {
+      favoriteId: 0,
       id: 0,
       cont: 0,
       word: [],
       tags: [],
       data: [],
+      favorite: [],
       competition: {},
       participants: [],
       ranking: [],
@@ -389,6 +398,7 @@ export default {
       features: [],
       climbing_gym_Service: new ClimbingGymsApiService(),
       scaler_Service: new ScalerApiService(),
+      localTopWay: LocalStoreTopWay,
       responsiveOptions: [
         {
           breakpoint: "1024px",
@@ -412,7 +422,7 @@ export default {
   },
   async mounted() {
     /////////// Climbing Gym Data  ////////////
-    this.id = this.$route.params.id;
+    this.id = this.climbingGymId;
     console.log(this.id, "Here");
     this.climbing_gym_Service.findClimbingById(this.id).then((response) => {
       this.climbing_gym = response.data;
@@ -516,7 +526,15 @@ export default {
       .catch((e) => {
         console.log(e);
       });
-    ///////////////////////////////////////////
+    /////////////// Favorite ///////////////////
+    this.scaler_Service.findFavoriteById(this.localTopWay.state.userInfo.id).then(response =>{
+      this.favorite = response.data;
+      console.log(this.favorite, "Favorite");
+    });
+    /////////////// Favorite Data ///////////////////
+    this.scaler_Service.getAllFavorites().then(response =>{
+      this.favoriteId = response.data;
+    });
   },
   methods: {
     informationObject(object) {
@@ -530,6 +548,57 @@ export default {
         Object.assign(this.users[i], this.comments[i]);
       }
       console.log(this.users);
+    },
+    myLeague(name,id) {
+      if (this.localTopWay.state.isLogin){
+        this.$router.push(`/${name}/${id}/MyLeagues`);
+      }else {
+        alert("Please Login First");
+      }
+    },
+    newLeague(name,id) {
+      if (this.localTopWay.state.isLogin){
+        this.$router.push(`/NewLeague/${name}/${id}`);
+      }else {
+        alert("Please Login First");
+      }
+    },
+    joinLeague(name,id) {
+      if (this.localTopWay.state.isLogin){
+        this.$router.push(`/${name}/${id}/JoinLeague`);
+      }else {
+        alert("Please Login First");
+      }
+    },
+    listFavorites(){
+      console.log(this.favorite, "Favorite");
+      for (let x of this.favorite) {
+        if(x.climbingGymId === this.id){
+          return true;
+        }
+      }
+      return false;
+    },
+    follow(){
+      this.favoriteId[this.favoriteId.length-1].id
+      let follow = {
+        id: this.favoriteId[this.favoriteId.length-1].id +1,
+        scalerId: this.localTopWay.state.userInfo.id,
+        climbingGymId: this.id
+      }
+      this.scaler_Service.createFavorite(follow).then(response =>{
+        console.log(response.data);
+        this.$router.go(0);
+      });
+    },
+    unfollow(){
+      this.scaler_Service.findFavoriteByscalersIdAndClimbingGymId(this.localTopWay.state.userInfo.id,this.id).then(response =>{
+        console.log(response.data);
+        this.scaler_Service.detectFavorite(response.data[0].id).then(response =>{
+          console.log(response.data);
+          this.$router.go(0);
+        });
+      });
     },
   },
 };
