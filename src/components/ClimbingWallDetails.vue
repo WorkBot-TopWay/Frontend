@@ -5,17 +5,22 @@
         label="My leagues"
         icon="pi pi-star-fill"
         class="p-button-success mr-2"
-        @click="myLeague(climbing_gym.name,id)"
+        @click="myLeague(climbing_gym.name, id)"
       />
-      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning"  />
+      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning" />
     </template>
     <template #end>
-      <Button label="New league" icon="pi pi-plus" class="mr-2" @click="newLeague(climbing_gym.name, id)" />
+      <Button
+        label="New league"
+        icon="pi pi-plus"
+        class="mr-2"
+        @click="newLeague(climbing_gym.name, id)"
+      />
       <Button
         label="Join league"
         icon="pi pi-reply"
         class="p-button-secondary mr-2"
-        @click="joinLeague(climbing_gym.name,id)"
+        @click="joinLeague(climbing_gym.name, id)"
       />
     </template>
   </Toolbar>
@@ -96,7 +101,10 @@
         }}</span>
       </div>
       <div class="m-3">
-        <p v-if="informationObject(feature)" class="font text-justify text-base font-medium line-height-2">
+        <p
+          v-if="informationObject(feature)"
+          class="font text-justify text-base font-medium line-height-2"
+        >
           {{ feature.description }}
         </p>
         <p v-else class="font text-justify text-base font-medium line-height-2">
@@ -104,12 +112,36 @@
         </p>
       </div>
       <div class="flex justify-content-center mt-2 mb-2">
-        <Button v-if="!listFavorites()" label="Follow" icon="pi pi-heart" class="p-button-help mr-2" @click="follow()"/>
-        <Button v-else label="Unfollow" icon="pi pi-heart-fill" class="p-button-help mr-2" @click="unfollow()"/>
+        <Button
+          v-if="!listFavorites()"
+          label="Follow"
+          icon="pi pi-heart"
+          class="p-button-help mr-2"
+          @click="follow()"
+        />
+        <Button
+          v-else
+          label="Unfollow"
+          icon="pi pi-heart-fill"
+          class="p-button-help mr-2"
+          @click="unfollow()"
+        />
       </div>
       <div class="flex align-content-center justify-content-center">
-
-        <div v-for="tag of word" :key="tag" class="flex align-items-center justify-content-center flex-wrap mt-2 mr-1 ml-1 mb-2">
+        <div
+          v-for="tag of word"
+          :key="tag"
+          class="
+            flex
+            align-items-center
+            justify-content-center
+            flex-wrap
+            mt-2
+            mr-1
+            ml-1
+            mb-2
+          "
+        >
           <Tag class="mr-2" severity="success" :value="tag"></Tag>
         </div>
       </div>
@@ -346,7 +378,7 @@
             </p>
           </div>
         </div>
-        <div class="score flex flex-column" style="width: 25%" >
+        <div class="score flex flex-column" style="width: 25%">
           <div
             class="flex align-content-center justify-content-center button"
             v-for="rank of ranking"
@@ -359,11 +391,13 @@
           </div>
         </div>
       </div>
-
-
     </div>
-    <div class="flex justify-content-center align-items-start" v-else style="width: 15%">
-      <p class="font text-justify text-base font-semibold" >
+    <div
+      class="flex justify-content-center align-items-start"
+      v-else
+      style="width: 15%"
+    >
+      <p class="font text-justify text-base font-semibold">
         Does not contain ranking
       </p>
     </div>
@@ -486,10 +520,10 @@ export default {
     /////////// Comments Climbing Gym Data  ////////////
     this.climbing_gym_Service
       .findCommentById(this.id)
-      .then(response => {
+      .then((response) => {
         this.comments = response.data;
         console.log(this.comments);
-        this.comments.forEach( element => {
+        this.comments.forEach((element) => {
           this.scaler_Service
             .findById(element.scalerId)
             .then((response) => {
@@ -527,18 +561,24 @@ export default {
         console.log(e);
       });
     /////////////// Favorite ///////////////////
-    this.scaler_Service.findFavoriteById(this.localTopWay.state.userInfo.id).then(response =>{
-      this.favorite = response.data;
-      console.log(this.favorite, "Favorite");
-    });
+    this.scaler_Service
+      .findFavoriteById(this.localTopWay.state.userInfo.id)
+      .then((response) => {
+        this.favorite = response.data;
+        console.log(this.favorite, "Favorite");
+      });
     /////////////// Favorite Data ///////////////////
-    this.scaler_Service.getAllFavorites().then(response =>{
+    this.scaler_Service.getAllFavorites().then((response) => {
       this.favoriteId = response.data;
     });
   },
   methods: {
     informationObject(object) {
-      if ( object === undefined || object === null||Object.entries(object).length === 0) {
+      if (
+        object === undefined ||
+        object === null ||
+        Object.entries(object).length === 0
+      ) {
         return false;
       }
       return true;
@@ -549,56 +589,67 @@ export default {
       }
       console.log(this.users);
     },
-    myLeague(name,id) {
-      if (this.localTopWay.state.isLogin){
+    myLeague(name, id) {
+      if (this.localTopWay.state.isLogin) {
         this.$router.push(`/${name}/${id}/MyLeagues`);
-      }else {
+      } else {
         alert("Please Login First");
       }
     },
-    newLeague(name,id) {
-      if (this.localTopWay.state.isLogin){
+    newLeague(name, id) {
+      if (this.localTopWay.state.isLogin) {
         this.$router.push(`/NewLeague/${name}/${id}`);
-      }else {
+      } else {
         alert("Please Login First");
       }
     },
-    joinLeague(name,id) {
-      if (this.localTopWay.state.isLogin){
+    joinLeague(name, id) {
+      if (this.localTopWay.state.isLogin) {
         this.$router.push(`/${name}/${id}/JoinLeague`);
-      }else {
+      } else {
         alert("Please Login First");
       }
     },
-    listFavorites(){
-      console.log(this.favorite, "Favorite");
-      for (let x of this.favorite) {
-        if(x.climbingGymId === this.id){
-          return true;
+    listFavorites() {
+        console.log(this.favorite, "Favorite");
+        for (let x of this.favorite) {
+          if (x.climbingGymId === this.id) {
+            return true;
+          }
         }
-      }
-      return false;
+        return false;
     },
-    follow(){
-      this.favoriteId[this.favoriteId.length-1].id
-      let follow = {
-        id: this.favoriteId[this.favoriteId.length-1].id +1,
-        scalerId: this.localTopWay.state.userInfo.id,
-        climbingGymId: this.id
-      }
-      this.scaler_Service.createFavorite(follow).then(response =>{
-        console.log(response.data);
-        this.$router.go(0);
-      });
-    },
-    unfollow(){
-      this.scaler_Service.findFavoriteByscalersIdAndClimbingGymId(this.localTopWay.state.userInfo.id,this.id).then(response =>{
-        console.log(response.data);
-        this.scaler_Service.detectFavorite(response.data[0].id).then(response =>{
+    follow() {
+      if(this.localTopWay.state.isLogin){
+        this.favoriteId[this.favoriteId.length - 1].id;
+        let follow = {
+          id: this.favoriteId[this.favoriteId.length - 1].id + 1,
+          scalerId: this.localTopWay.state.userInfo.id,
+          climbingGymId: this.id,
+        };
+        this.scaler_Service.createFavorite(follow).then((response) => {
           console.log(response.data);
           this.$router.go(0);
         });
-      });
+      }else {
+        alert("Please Login First");
+      }
+    },
+    unfollow() {
+      this.scaler_Service
+        .findFavoriteByscalersIdAndClimbingGymId(
+          this.localTopWay.state.userInfo.id,
+          this.id
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.scaler_Service
+            .detectFavorite(response.data[0].id)
+            .then((response) => {
+              console.log(response.data);
+              this.$router.go(0);
+            });
+        });
     },
   },
 };
