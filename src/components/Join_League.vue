@@ -29,7 +29,8 @@
             <Button @click="youAreAlreadyAMember()" class="p-button-secondary" label="Primary" >You are already a member</Button>
           </div>
           <div v-else>
-            <Button @click="statusRequest(requestToJoinLeague(league.id),league.id)" label="Primary" > {{requestToJoinLeague(league.id)}} </Button>
+            <Button v-if="requestSent(league.id)" @click="requestSentData(league.id)" label="Primary" > Request Send </Button>
+            <Button v-else @click="sendRequest(league.id)" class="p-button-secondary" >Send request</Button>
           </div>
 
         </template>
@@ -96,28 +97,6 @@ created() {
 
   },
   methods:{
-      async statusRequest(status,id){
-        if(status === "Send request") {
-          alert("You have already submitted a request");
-          this.newRequest.id = this.idRequest.length + 1;
-          this.newRequest.leagueId = id;
-          this.newRequest.scalerId = this.localTopWay.state.userInfo.id;
-          ///// Loading the request /////
-          this.league_service.createRequests(this.newRequest).then(response => {
-           console.log(response);
-            this.$router.go(0)
-          });
-        }else if (status === "Request sent") {
-         let index = confirm ("You have already submitted a request, do you want to cancel it?");
-         if(index){
-           this.league_service.deleteRequests(this.findRequest(id)).then(response => {
-              console.log(this.id, "deleted");
-             console.log(response);
-             this.$router.go(0);
-           });
-         }
-        }
-     },
     youAreAlreadyAMember(){
       alert("You are already a member");
     },
@@ -125,24 +104,40 @@ created() {
         console.log(this.listUserLeagues, "listUserLeagues");
       for(let index of this.listUserLeagues){
         if(this.localTopWay.state.userInfo.id == index.scalerId && index.leagueId == id){
-
           return true;
         }
       }
       return false;
     },
-    requestToJoinLeague(id){
-
+    requestSent(id){
       for (let index of this.request) {
         if(index.leagueId === id && index.scalerId === this.localTopWay.state.userInfo.id){
-          this.flag=1;
-          break;
-        }else {
-          this.flag=0;
+          return true;
         }
       }
-      return this.status[this.flag];
+      return false;
     },
+  requestSentData(id){
+    let index = confirm ("You have already submitted a request, do you want to cancel it?");
+    if(index){
+      this.league_service.deleteRequests(this.findRequest(id)).then(response => {
+        console.log(this.id, "deleted");
+        console.log(response);
+        this.$router.go(0);
+      });
+    }
+  },
+  sendRequest(id){
+    alert("You have already submitted a request");
+    this.newRequest.id = this.idRequest.length + 1;
+    this.newRequest.leagueId = id;
+    this.newRequest.scalerId = this.localTopWay.state.userInfo.id;
+    ///// Loading the request /////
+    this.league_service.createRequests(this.newRequest).then(response => {
+      console.log(response);
+      this.$router.go(0)
+    });
+  },
     findRequest(id){
        for (let index of this.request){
        if(index.leagueId=== id){
