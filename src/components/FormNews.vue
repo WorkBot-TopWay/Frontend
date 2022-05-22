@@ -30,7 +30,7 @@
 
     <div id="app">
       <div v-if="!image">
-        <button>Select an image</button>
+        <button>Select your cover image</button>
         <input type="file" @change="onFileChange">
       </div>
       <div v-else>
