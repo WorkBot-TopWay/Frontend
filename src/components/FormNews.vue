@@ -27,24 +27,24 @@
     <div class="submit">
       <button>Submit</button>
     </div>
+
     <div id="app">
       <div v-if="!image">
-        <label>Select Image</label>
+        <button>Select an image</button>
         <input type="file" @change="onFileChange">
       </div>
       <div v-else>
-        <img src="image"/>
+        <img :src="image"/>
         <button @click="removeImage">Remove Image</button>
       </div>
     </div>
-  </form>
 
+  </form>
 </template>
 
 <script>
 export default {
-  name: "TestForm",
-  el: "#app",
+  name: "FormNews",
   data(){
     return{
       image:'',
@@ -57,11 +57,13 @@ export default {
       passwordError: ''
     }
   },
+
   beforeMount(){
     var vm = this
     console.log('before Mounted')
     vm.get('img')
   },
+
   methods: {
     get(key){
       this.image=localStorage.getItem(key);
@@ -92,10 +94,12 @@ export default {
       reader.readAsDataURL(file);
     },
 
-    removerImage : function (e){
+    removeImage : function (e){
       this.image = '';
       localStorage.removeItem('img')
     },
+
+
 
     addTitle(e){
       if(e.key === ',' && this.tempTitle){
@@ -125,10 +129,10 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
-<style>
+<style scoped>
 form{
   max-width: 420px;
   margin: 30px;
