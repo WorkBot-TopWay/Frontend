@@ -12,6 +12,7 @@ import LeagueDetails from "../components/LeagueDetails.vue";
 import New_League from "../components/New_League.vue";
 import Ranking_League from "../components/Ranking_League.vue";
 import FavoriteScaler from "../components/FavoriteScaler.vue";
+import FormNews from "../components/FormNews.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +73,11 @@ const router = createRouter({
       path:'/Favorite',
       name:'Favorite',
       component: FavoriteScaler
+    },
+    {
+      path:'/News',
+      name:'News',
+      component: FormNews
     }
     /* ,
     {
