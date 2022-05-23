@@ -1,17 +1,11 @@
 <template>
   <div
-    class="
-      stepsdemo-content
-      flex
-      justify-content-center
-      align-items-center
-      bg-black-alpha-10
-    "
+    class="stepsdemo-content flex justify-content-center align-items-center bg-black-alpha-10"
     style="height: 85vh"
   >
     <Card class="col-12 md:col-6 lg:col-10">
-      <template v-slot:title> LogIn </template>
-      <template v-slot:subtitle> Initial session </template>
+      <template v-slot:title> Scoring </template>
+      <template v-slot:subtitle>  </template>
       <template v-slot:content>
         <div class="p-fluid">
           <div class="field">
@@ -22,7 +16,8 @@
               :class="{ 'p-invalid': validationErrors.email && submitted }"
             />
             <small v-show="validationErrors.email && submitted" class="p-error"
-              >email is required.</small>
+            >email is required.</small
+            >
           </div>
           <div class="field">
             <label class="label">Create a password</label>
@@ -36,7 +31,7 @@
             <small
               v-show="validationErrors.password && submitted"
               class="p-error"
-              >requires entering a password</small
+            >requires entering a password</small
             >
           </div>
         </div>
