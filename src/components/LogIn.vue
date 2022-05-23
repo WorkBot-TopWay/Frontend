@@ -22,8 +22,7 @@
               :class="{ 'p-invalid': validationErrors.email && submitted }"
             />
             <small v-show="validationErrors.email && submitted" class="p-error"
-              >email is required.</small
-            >
+              >email is required.</small>
           </div>
           <div class="field">
             <label class="label">Create a password</label>

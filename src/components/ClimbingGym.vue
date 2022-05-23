@@ -61,6 +61,13 @@
       </Card>
     </div>
   </div>
+
+  <div class="card">
+    <div class="speeddial-tooltip-demo" :style="{ position: 'relative', height: '350px' }">
+      <SpeedDial :model="items" direction="up" class="speeddial-right" buttonClass="p-button-danger" :tooltipOptions="{position: 'left'}" />
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -84,6 +91,13 @@ export default {
       climbing_gym: {},
       scalers: [],
       climbing_gym_Service: new ClimbingGymsApiService(),
+      items:[
+        {
+          label: 'News',
+          icon: 'pi pi-file',
+          to:'/News'
+        }
+      ]
     };
   },
   computed: {
@@ -197,12 +211,25 @@ export default {
         }
       });
     },
+    postNews(){
+      console.log();
+      this.$router.push(`/News`);
+    }
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bg {
   background-color: black;
+}
+
+::v-deep(.speeddial-tooltip-demo) {
+  .p-speeddial-direction-up {
+    &.speeddial-right {
+      right: 0;
+      bottom: 0;
+    }
+  }
 }
 </style>

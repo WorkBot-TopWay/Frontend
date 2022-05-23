@@ -81,8 +81,22 @@ export default {
             localStorage.removeItem('user');
             localStorage.clear();
           },
+
           url: 'http://localhost:3001/' //cambia a la ruta del servidor
-        }]
+        },
+        {
+          label: 'News',
+          icon: 'pi pi-file',
+          to:'/News',
+          visible: true
+        },
+        {
+          label: 'Feat',
+          icon: 'pi pi-file',
+          to:'/FormFeature',
+          visible: true
+        }
+        ]
     }
   },
   watch: {

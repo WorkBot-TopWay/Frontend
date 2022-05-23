@@ -1,33 +1,70 @@
 <template>
-  <form @submit.prevent="featureSubmit">
-    <label>Input</label>
-    <input type="email" required v-model="email">
+  <div class="stepsdemo-content flex justify-content-center align-items-center bg-black-alpha-10"
+    style="height: 85vh">
+    <Card class="col-12 md:col-6 lg:col-10">
+      <template v-slot:title> Gym Features </template>
+      <template v-slot:subtitle> What makes your gym special? </template>
+      <template v-slot:content>
+        <div class="p-fluid">
+          <div class="field">
+            <label for="description"> Description </label>
+            <InputText id="description" v-model="description"/>
+          </div>
 
-    <label>Password</label>
-    <input type="password" required v-model="password">
-    <div v-if="passwordError " class="error">{{passwordError}}</div>
+          <div class="field">
+            <label for="type_climbing"> Type(s) of Climbing </label>
+            <InputText id="type_climbing" v-model="tempType_C" placeholder="Ex: Bouldering, Lead, etc" @keyup="addType_Climbing"/>
+            <div v-for="type_c in type_Climbing" :key="type_c" class="pill">
+              <span @click="deleteType_C(type_c)"> {{ type_c }}</span>
+            </div>
+          </div>
 
-    <label>Role</label>
-    <select v-model="role">
-      <option value="developer">Web Developer</option>
-      <option value="designer">Web Designer</option>
-    </select>
+          <div class="p-fluid grid formgrid">
+            <div class="field col-12 md:col-4">
+              <label for="days_week"> Openings </label>
+              <InputText id="days_week" v-model="days_week" placeholder="Ex: Monday to Friday"/>
+            </div>
+            <div class="field col-12 md:col-4">
+              <label for="office_hours">Hours</label>
+              <InputText id="office_hours" v-model="office_hours" placeholder="Ex: 8:00 - 20:00"/>
+            </div>
+          </div>
 
-    <label>Title</label>
-    <input type="text" v-model="tempTitle" @keyup="addTitle">
-    <div v-for="title in titles" :key="title" class="pill">
-      <span @click="deleteTitle(title)"> {{ title }}</span>
-    </div>
-
-    <div class="terms">
-      <input type="checkbox" v-model="terms" required>
-      <label>Accept terms & conditions</label>
-    </div>
-
-    <div class="submit">
-      <button>Submit</button>
-    </div>
-  </form>
+          <div class="field">
+            <label for="routes"> Number of routes </label>
+            <InputNumber id="routes" v-model="routes"/>
+          </div>
+          <div class="field">
+            <label for="max_height"> Maximum Height </label>
+            <InputText id="max_height" v-model="max_height" placeholder="Ex: 20 meters"/>
+          </div>
+          <div class="field">
+            <label for="rock_type"> Rock Type </label>
+            <InputText id="rock_type" v-model="rock_type" placeholder="Ex: Polyurethane, wood, etc"/>
+          </div>
+          <div class="field">
+            <label for="bolting"> Bolting </label>
+            <InputText id="bolting" v-model="bolting" placeholder="Ex: Sport climb-bouldering-Traditional climbing"/>
+          </div>
+          <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+              <label for="price"> Price </label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">$</span>
+                <InputNumber id="price" v-model="price" placeholder="Price"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-slot:footer>
+        <div class="grid grid-nogutter justify-content-between submit">
+          <i></i>
+          <Button label="Submit" @click="featureSubmit()"/>
+        </div>
+      </template>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -35,82 +72,48 @@ export default {
   name: "FormFeature",
   data(){
     return{
-      email: '',
-      password: '',
-      role:'',
-      terms: false,
-      tempTitle: '',
-      titles: [],
-      passwordError: ''
+      description:'',
+      tempType_C:'',
+      days_week:'',
+      office_hours:'',
+      routes: null,
+      max_height: '',
+      rock_type: '',
+      bolting:'',
+      price: null,
+      type_Climbing:[]
     }
   },
   methods: {
-    addTitle(e){
-
-      if(e.key === ',' && this.tempTitle){
-        if(!this.titles.includes(this.tempTitle)){
-
-          this.titles.push(this.tempTitle)
+    addType_Climbing(e){
+      if(e.key === ',' && this.tempType_C){
+        if(!this.type_Climbing.includes(this.tempType_C)){
+            this.type_Climbing.push(this.tempType_C)
         }
-        this.tempTitle = ''
+        this.tempType_C = ''
       }
     },
-
-    deleteTitle(title){
-      this.titles = this.titles.filter((item) => {
-
-        return title !== item
+    deleteType_C(type_c){
+      this.type_Climbing = this.type_Climbing.filter((item) =>{
+        return type_c !== item
       })
     },
     featureSubmit(){
-      this.passwordError = this.password.length > 5 ?
-        '' : 'Password must be at least 6 chars long'
-      if (!this.passwordError){
-        console.log('email', this.email)
-        console.log('password', this.password)
-        console.log('role', this.role)
-        console.log('title', this.titles)
-        console.log('Terms Accepted', this.terms)
-      }
+      console.log('description', this.description)
+      console.log('days_week',this.days_week)
+      console.log('office_hours',this.office_hours)
+      console.log('routes',this.routes)
+      console.log('max_height',this.max_height)
+      console.log('rock_type',this.rock_type)
+      console.log('bolting',this.bolting)
+      console.log('price',this.price)
+      console.log('type_climbing', this.type_Climbing)
     }
   }
 };
 </script>
 
 <style scoped>
-form{
-  max-width: 420px;
-  margin: 30px;
-  background: white;
-  text-align: left;
-  padding: 40px;
-  border-radius: 10px;
-}
-label{
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
-  font-size: 0.6em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-input, select{
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-}
-input[type="checkbox"]{
-  display: inline-block;
-  width: 16px;
-  margin: 0 10px 0 0;
-  position: relative;
-  top: 2px;
-}
 .pill{
   display: inline-block;
   margin: 20px 10px 0 0;
@@ -133,11 +136,5 @@ button{
 }
 .submit{
   text-align: center;
-}
-.error{
-  color: #ff0062;
-  margin-top: 10px;
-  font-size: 0.8em;
-  font-weight: bold;
 }
 </style>

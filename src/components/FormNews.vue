@@ -1,23 +1,31 @@
 <template>
+
   <form @submit.prevent="newsSubmit">
-    <label>Input</label>
-    <input type="email" required v-model="email">
-
-    <label>Password</label>
-    <input type="password" required v-model="password">
-    <div v-if="passwordError " class="error">{{passwordError}}</div>
-
-    <label>Role</label>
-    <select v-model="role">
-      <option value="developer">Web Developer</option>
-      <option value="designer">Web Designer</option>
-    </select>
-
     <label>Title</label>
     <input type="text" v-model="tempTitle" @keyup="addTitle">
     <div v-for="title in titles" :key="title" class="pill">
       <span @click="deleteTitle(title)"> {{ title }}</span>
     </div>
+
+    <div id="app">
+      <div v-if="!image">
+        <label>Select your cover image</label>
+        <input type="file" @change="onFileChange">
+      </div>
+      <div v-else>
+        <img :src="image"/>
+        <button @click="removeImage">Remove Image</button>
+      </div>
+    </div>
+
+    <div id="app">
+      <input type="date" v-model="date">
+    </div>
+    <div>
+      <label>Description</label>
+      <input type="text" v-model="description">
+    </div>
+
 
     <div class="terms">
       <input type="checkbox" v-model="terms" required>
@@ -26,17 +34,6 @@
 
     <div class="submit">
       <button>Submit</button>
-    </div>
-
-    <div id="app">
-      <div v-if="!image">
-        <button>Select your cover image</button>
-        <input type="file" @change="onFileChange">
-      </div>
-      <div v-else>
-        <img :src="image"/>
-        <button @click="removeImage">Remove Image</button>
-      </div>
     </div>
 
   </form>
@@ -48,13 +45,12 @@ export default {
   data(){
     return{
       image:'',
-      email: '',
-      password: '',
       role:'',
       terms: false,
       tempTitle: '',
+      description: '',
       titles: [],
-      passwordError: ''
+      date: new Date().toISOString().substring(0,10)
     }
   },
 
@@ -118,13 +114,9 @@ export default {
       })
     },
     newsSubmit(){
-      this.passwordError = this.password.length > 5 ?
-        '' : 'Password must be at least 6 chars long'
-      if (!this.passwordError){
-        console.log('email', this.email)
-        console.log('password', this.password)
-        console.log('role', this.role)
+      if (!this.terms){
         console.log('title', this.titles)
+        console.log('description', this.description)
         console.log('Terms Accepted', this.terms)
       }
     }
@@ -140,6 +132,8 @@ form{
   text-align: left;
   padding: 40px;
   border-radius: 10px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+  Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 label{
   color: #aaa;

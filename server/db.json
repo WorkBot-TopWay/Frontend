@@ -128,6 +128,32 @@
       "phone": 987123456,
       "type": "Scaler",
       "status": false
+    },
+    {
+      "id": 6,
+      "first_name": "Gonzalo",
+      "last_name": "Laqui",
+      "email": "asdasd@asdasd.com",
+      "password": "Asdasd_147",
+      "district": "Miraflores",
+      "address": "chorrillos",
+      "url_photo": "\"C:\\Users\\gonza\\OneDrive\\Imágenes\\IMG_20220417_211637_070.jpg\"",
+      "phone": 999999999,
+      "type": "Scaler",
+      "status": false
+    },
+    {
+      "id": 7,
+      "first_name": "Gonza",
+      "last_name": "Chalan",
+      "email": "correo@correo.com",
+      "password": "Asdqwe_147",
+      "district": "Miraflores",
+      "address": "aqui",
+      "url_photo": "\"C:\\Users\\gonza\\OneDrive\\Imágenes\\IMG_20220417_211637_070.jpg\"",
+      "phone": 11111111,
+      "type": "Scaler",
+      "status": false
     }
   ],
   "favorites": [
@@ -257,6 +283,15 @@
       "description": "The best group",
       "url_photo": "https://mejorconsalud.as.com/wp-content/uploads/2021/04/escalada-roca.jpg",
       "number_participants": 3
+    },
+    {
+      "id": 3,
+      "scalerId": 7,
+      "climbingGymId": 1,
+      "name": "uno",
+      "description": "AAA",
+      "url_photo": "\"C:\\Users\\gonza\\OneDrive\\Imágenes\\IMG_20220417_211637_070.jpg\"",
+      "number_participants": 1
     }
   ],
   "requests": [
@@ -264,6 +299,18 @@
       "id": 1,
       "leagueId": 2,
       "scalerId": 3,
+      "status": "Pending"
+    },
+    {
+      "id": 2,
+      "leagueId": 1,
+      "scalerId": 7,
+      "status": "Pending"
+    },
+    {
+      "id": 3,
+      "leagueId": 3,
+      "scalerId": 7,
       "status": "Pending"
     }
   ],
