@@ -118,7 +118,7 @@ export default {
             localStorage.removeItem('user');
             localStorage.clear();
           },
-          url: 'http://localhost:3001/' //cambia a la ruta del servidor
+          url: 'https://topway-bd33d.web.app/' //cambia a la ruta del servidor
         }]
     }
   },

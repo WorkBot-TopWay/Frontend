@@ -266,7 +266,14 @@
       "number_participants": 3
     }
   ],
-  "requests": [],
+  "requests": [
+    {
+      "id": 1,
+      "leagueId": 2,
+      "scalerId": 3,
+      "status": "Pending"
+    }
+  ],
   "climbers_league": [
     {
       "id": 1,
