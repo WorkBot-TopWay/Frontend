@@ -328,6 +328,7 @@ export default {
       displayConfirmation: false,
       editInformation: false,
       requestLeague: [],
+      notificationId: 0,
       admin: {},
       climberId: [],
       userClimber: [],
@@ -367,6 +368,14 @@ export default {
         });
       });
 
+    this.scaler_Service.getAllNotifications().then((response) => {
+      if (response.data.length === 0) {
+        this.notificationId = 1;
+      }else {
+        this.notificationId = response.data[response.data.length - 1].id + 1;
+        console.log(this.notificationId, "notificationId");
+      }
+    });
     this.league_service
       .findAllLeaguesByLeagueId(this.leagueId)
       .then((response) => {
@@ -451,6 +460,14 @@ export default {
     },
     requestAccept(id) {
       this.leagues.number_participants++;
+      let data ={
+        id: this.notificationId,
+        scalerId: id,
+        message: "Your request to join the league " + this.leagues.name + " was accepted"
+      }
+      this.scaler_Service.createNotification(data).then(() => {
+        this.notificationId++;
+      });
       this.league_service
         .update(this.leagues.id, this.leagues)
         .then((response) => {
@@ -483,6 +500,15 @@ export default {
           .then((response) => {
             console.log(this.id, "deleted");
             console.log(response);
+            let data ={
+              id: this.notificationId,
+              scalerId: id,
+              message: `Your request to join the league ${this.leagues.name} was rejected`,
+            }
+
+            this.scaler_Service.createNotification(data).then(() => {
+              this.notificationId++;
+            });
             this.$router.go(0);
           });
       }

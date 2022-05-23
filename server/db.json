@@ -130,6 +130,13 @@
       "status": false
     }
   ],
+  "notifications": [
+    {
+      "id": 1,
+      "scalerId": 2,
+      "message": "Would you like to join the gym?"
+    }
+  ],
   "favorites": [
     {
       "id": 1,

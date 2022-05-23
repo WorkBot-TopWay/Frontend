@@ -40,9 +40,22 @@ export class ScalerApiService{
   createFavorite(data) {
     return http.post("/favorites", data);
   }
-
   detectFavorite(id) {
     return http.delete(`/favorites/${id}`);
+  }
+
+  ///// Notifications /////
+  getAllNotifications() {
+    return http.get("/notifications");
+  }
+  getAllNotificationsByScalerId(id) {
+    return http.get(`/notifications?scalerId=${id}`);
+  }
+  createNotification(data) {
+    return http.post("/notifications", data);
+  }
+  deleteNotification(id) {
+    return http.delete(`/notifications/${id}`);
   }
 
 }
