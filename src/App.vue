@@ -95,6 +95,12 @@ export default {
           icon: 'pi pi-file',
           to:'/FormFeature',
           visible: true
+        },
+        {
+          label: 'Comp',
+          icon: 'pi pi-file',
+          to:'/FormCompetition',
+          visible: true
         }
         ]
     }

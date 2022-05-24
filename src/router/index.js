@@ -14,6 +14,7 @@ import Ranking_League from "../components/Ranking_League.vue";
 import FavoriteScaler from "../components/FavoriteScaler.vue";
 import FormNews from "../components/FormNews.vue";
 import FormFeature from "../components/FormFeature.vue";
+import FormCompetition from "../components/FormCompetition.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,6 +85,11 @@ const router = createRouter({
       path:'/FormFeature',
       name:'Gym Features',
       component: FormFeature
+    },
+    {
+      path:'/FormCompetition',
+      name:'Create Competition',
+      component: FormCompetition
     }
     /* ,
     {

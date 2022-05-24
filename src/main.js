@@ -27,7 +27,8 @@ import AvatarGroup from 'primevue/avatargroup';
 import OrderList from 'primevue/orderlist';
 import ScrollPanel from 'primevue/scrollpanel';
 import SpeedDial from 'primevue/speeddial';
-import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+import ColumnGroup from 'primevue/columngroup';
+import Calendar from 'primevue/calendar'; //optional for column grouping
 import Row from 'primevue/row';
 import TreeTable from 'primevue/treetable';
 import Chip from 'primevue/chip';
@@ -82,6 +83,7 @@ app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
 app.component("OrderList", OrderList);
 app.component("ScrollPanel", ScrollPanel);
+app.component("Calendar", Calendar);
 app.component("SpeedDial", SpeedDial);
 app.component("ColumnGroup", ColumnGroup);
 // eslint-disasble-next-line vue/multi-word-component-names
