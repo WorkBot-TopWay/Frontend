@@ -3,12 +3,12 @@
     <div class="flex flex-wrap m-3 bg-black-alpha-10" style="width: 85%">
       <Card
         class="m-3 col-12 md:col-6 lg:col-3"
-        v-for="gym of climbing_gym"
+        v-for="gym of favorites"
         :key="gym"
         style="width: 17em"
       >
         <template #header>
-          <img alt="user header" :src="gym.logo_url" />
+          <img alt="user header" :src="gym.logoUrl" />
         </template>
 
         <template #title>
@@ -43,7 +43,6 @@ export default {
   data: () => {
     return {
       favorites: [],
-      climbing_gym: [],
       climbing_gym_Service: new ClimbingGymsApiService(),
       scaler_Service: new ScalerApiService(),
       localTopWay: LocalStoreTopWay,
@@ -54,13 +53,6 @@ export default {
       .findFavoriteByScalerId(this.localTopWay.state.userInfo.id)
       .then((res) => {
         this.favorites = res.data;
-        this.favorites.forEach((gym) => {
-          this.climbing_gym_Service
-            .findClimbingById(gym.climbingGymId)
-            .then((res) => {
-              this.climbing_gym.push(res.data);
-            });
-        });
       });
   },
   methods: {

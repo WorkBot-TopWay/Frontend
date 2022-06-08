@@ -38,7 +38,7 @@
         style="width: 17em"
       >
         <template #header>
-          <img alt="user header" :src="gym.logo_url" />
+          <img alt="user header" :src="gym.logoUrl" />
         </template>
 
         <template #title>

@@ -19,12 +19,12 @@
             <Button icon="pi pi-bell" class="p-button-rounded p-button-info mr-4"  @click="openNotifications()"/>
 
             <Avatar
-              :image="localTopWay.state.userInfo.url_photo"
+              :image="localTopWay.state.userInfo.urlPhoto"
               class="mr-2"
               size="xlarge"
               shape="circle"
             />
-            <span class="text-center text-900  font-semibold">{{localTopWay.state.userInfo.first_name }} {{localTopWay.state.userInfo.last_name }}</span>
+            <span class="text-center text-900  font-semibold">{{localTopWay.state.userInfo.firstName }} {{localTopWay.state.userInfo.lastName }}</span>
           </div>
         </template>
       </Menubar>

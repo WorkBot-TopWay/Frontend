@@ -50,7 +50,7 @@
           style="width: 15em"
         >
           <template #header>
-            <img alt="user header" :src="newc.url_photo" />
+            <img alt="user header" :src="newc.urlImage" />
           </template>
 
           <template #title>
@@ -91,7 +91,7 @@
         style="width: 100%"
       >
         <Avatar
-          :image="climbing_gym.logo_url"
+          :image="climbing_gym.logoUrl"
           class="mr-2"
           size="xlarge"
           shape="circle"
@@ -129,7 +129,7 @@
       </div>
       <div class="flex align-content-center justify-content-center">
         <div
-          v-for="tag of word"
+          v-for="tag of tags"
           :key="tag"
           class="
             flex
@@ -142,7 +142,7 @@
             mb-2
           "
         >
-          <Tag class="mr-2" severity="success" :value="tag"></Tag>
+          <Tag class="mr-2" severity="success" :value="tag.name"></Tag>
         </div>
       </div>
       <TabView class="mr-4 ml-4">
@@ -158,7 +158,7 @@
               style="width: 100%; height: 400px"
             >
               <Galleria
-                :value="images.url_photo"
+                :value="images"
                 :showIndicators="true"
                 :showItemNavigators="true"
                 :showThumbnails="false"
@@ -169,8 +169,8 @@
               >
                 <template #item="slotProps">
                   <img
-                    :src="slotProps.item.url"
-                    :alt="slotProps.item.title"
+                    :src="slotProps.item.imageUrl"
+                    :alt="slotProps.item.alt"
                     style="max-width: 500px; height: 400px; display: block"
                   />
                 </template>
@@ -213,22 +213,17 @@
             </p>
             <p class="font text-justify text-base font-semibold">
               Number of routes:
-              <span class="font font-medium">{{ feature.n_routes }}</span>
+              <span class="font font-medium">{{ feature.routes }}</span>
             </p>
             <p class="font text-justify text-base font-semibold">
               Max height:
               <span class="font font-medium"
-                >{{ feature.max_height }} meters</span
+                > {{feature.max_height }} meters</span
               >
             </p>
             <p class="font text-justify text-base font-semibold">
               bolting:
-              <span
-                class="font font-medium"
-                v-for="bol of feature.bolting"
-                :key="bol"
-              >
-                {{ bol }}-</span
+              <span  class="font font-medium">{{feature.bolting}}</span
               >
             </p>
           </div>
@@ -246,11 +241,11 @@
           <div v-if="informationObject(feature)">
             <p class="font text-justify text-base font-semibold">
               Days of the week:
-              <span class="font font-medium">{{ feature.days_week }}</span>
+              <span class="font font-medium">Lunes a Viernes</span>
             </p>
             <p class="font text-justify text-base font-semibold">
               Hours:
-              <span class="font font-medium">{{ feature.office_hours }}</span>
+              <span class="font font-medium">{{ convertDate(feature.office_hours_start)}} - {{ convertDate(feature.office_hours_end) }}</span>
             </p>
           </div>
           <div v-else>
@@ -267,7 +262,7 @@
           </template>
           <div>
             <div
-              v-if="informationObject(users)"
+              v-if="informationObject(comments)"
               class="
                 flex
                 align-content-start
@@ -276,18 +271,17 @@
               "
               style="width: 80%"
             >
-              <span>{{ userCommentName() }}</span>
-              <div class="mt-3 ml-3" v-for="data of users" :key="data">
+              <div class="mt-3 ml-3" v-for="data of comments" :key="data">
                 <div class="flex align-content-start justify-content-start">
                   <Avatar
                     class="flex align-content-center justify-content-center m-2"
-                    :image="data.url_photo"
+                    :image="data.user.urlPhoto"
                     size="large"
                     shape="circle"
                   />
                   <span
                     class="font flex align-items-center justify-content-center"
-                    >{{ data.first_name }} {{ data.last_name }}</span
+                    >{{ data.user.firstName }} {{ data.user.lastName }}</span
                   >
                   <Rating
                     class="ml-3 flex align-items-center justify-content-center"
@@ -304,7 +298,7 @@
                     flex-column
                   "
                 >
-                  <span class="font">{{ data.comment }}</span>
+                  <span class="font">{{ data.description }}</span>
                   <span class="font mt-1">[published]: {{ data.date }}</span>
                 </div>
               </div>
@@ -415,21 +409,16 @@ export default {
       favoriteId: 0,
       id: 0,
       cont: 0,
-      word: [],
       tags: [],
-      data: [],
-      favorite: [],
+      favorite: {},
       competition: {},
       participants: [],
       ranking: [],
       comments: [],
-      users: [],
       feature: {},
       news: [],
       climbing_gym: {},
-      gallery: [],
-      images: {},
-      features: [],
+      images: [],
       climbing_gym_Service: new ClimbingGymsApiService(),
       scaler_Service: new ScalerApiService(),
       localTopWay: LocalStoreTopWay,
@@ -467,24 +456,25 @@ export default {
     this.climbing_gym_Service
       .findAllImagesById(this.id)
       .then((response) => {
-        this.gallery = response.data;
-        this.images = this.gallery[0];
+        this.images = response.data;
+        console.log(this.images, "Here Images");
       })
       .catch((e) => {
         console.log(e);
       });
     /////////// Feature Climbing Gym Data  ////////////
+
     this.climbing_gym_Service
       .findFeatureById(this.id)
       .then((response) => {
-        this.data = response.data;
-        this.feature = this.data[0];
+        this.feature= response.data;
         console.log(this.feature);
       })
       .catch((e) => {
         console.log(e);
       });
     console.log("Ready Image!!");
+
     /////////// News Climbing Gym Data  ////////////
     this.climbing_gym_Service
       .findNewsById(this.id)
@@ -496,7 +486,8 @@ export default {
       });
     ///////////// Competition Climbing Gym Data ////////////
     console.log("ranking");
-    /////////// Ranking Climbing Gym Data  ////////////
+    /////////// Ranking Climbing Gym Data  //////////// Revision de la data
+    /*
     this.climbing_gym_Service
       .findCompetitionById(this.id)
       .then((response) => {
@@ -516,63 +507,48 @@ export default {
       })
       .catch((e) => {
         console.log(e);
-      });
+      });*/
     /////////// Comments Climbing Gym Data  ////////////
     this.climbing_gym_Service
       .findCommentById(this.id)
-      .then((response) => {
+      .then(response =>{
         this.comments = response.data;
-        console.log(this.comments);
-        this.comments.forEach((element) => {
+        this.comments.forEach(element =>{
           this.scaler_Service
-            .findById(element.scalerId)
-            .then((response) => {
-              this.users.push(response.data);
-              console.log(this.users);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
+            .findById(element.scalerId).then(x=>{
+              element.user = x.data;
+          });
         });
-      })
-      .catch((e) => {
-        console.log(e);
+        console.log(this.comments, "Comments");
       });
     /////////// Tag Climbing Gym Data  ////////////
     this.climbing_gym_Service
-      .findClimbingById(this.id)
-      .then((response) => {
-        this.tags = response.data.category_gyms;
-        console.log(this.tags, "tags Here");
-        this.tags.forEach((element) => {
-          this.climbing_gym_Service
-            .findCategoryNameById(element.categoryId)
-            .then((response) => {
-              console.log(response.data.name, "Data here");
-              this.word.push(response.data.name);
-              console.log(this.word, "Word here");
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        });
-      })
-      .catch((e) => {
-        console.log(e);
+      .findCategoryByClimbingGymId(this.id)
+      .then( response =>{
+        this.tags = response.data;
       });
     /////////////// Favorite ///////////////////
+
     this.scaler_Service
-      .findFavoriteById(this.localTopWay.state.userInfo.id)
+      .findFavoriteByClimbingGymIdAndscalersId(this.id, this.localTopWay.state.userInfo.id)
       .then((response) => {
-        this.favorite = response.data;
+        if(response.data.length > 0|| response.data != null){
+          this.favorite = response.data;
+          console.log(this.favorite, "Favorite is > 0");
+        }else{
+          console.log(this.favorite, "Favorite is 0");
+          this.favorite = [];
+        }
+
         console.log(this.favorite, "Favorite");
       });
-    /////////////// Favorite Data ///////////////////
-    this.scaler_Service.getAllFavorites().then((response) => {
-      this.favoriteId = response.data;
-    });
   },
   methods: {
+    convertDate(date) {
+      let dateHour = new Date(date);
+      let dateMinute = new Date(date);
+      return dateHour.getHours()+":"+dateMinute.getMinutes();
+    },
     informationObject(object) {
       if (
         object === undefined ||
@@ -582,12 +558,6 @@ export default {
         return false;
       }
       return true;
-    },
-    userCommentName() {
-      for (let i = 0; i < this.users.length; i++) {
-        Object.assign(this.users[i], this.comments[i]);
-      }
-      console.log(this.users);
     },
     myLeague(name, id) {
       if (this.localTopWay.state.isLogin) {
@@ -611,23 +581,18 @@ export default {
       }
     },
     listFavorites() {
-        console.log(this.favorite, "Favorite");
-        for (let x of this.favorite) {
-          if (x.climbingGymId === this.id) {
+          if (this.informationObject(this.favorite)) {
+            console.log(this.favorite, "Favorite true");
             return true;
-          }
         }
+      console.log(this.favorite, "Favorite list false");
         return false;
     },
     follow() {
       if(this.localTopWay.state.isLogin){
-        this.favoriteId[this.favoriteId.length - 1].id;
         let follow = {
-          id: this.favoriteId[this.favoriteId.length - 1].id + 1,
-          scalerId: this.localTopWay.state.userInfo.id,
-          climbingGymId: this.id,
         };
-        this.scaler_Service.createFavorite(follow).then((response) => {
+        this.scaler_Service.createFavorite(this.id,this.localTopWay.state.userInfo.id,follow).then((response) => {
           console.log(response.data);
           this.$router.go(0);
         });
@@ -636,21 +601,15 @@ export default {
       }
     },
     unfollow() {
-      this.scaler_Service
-        .findFavoriteByscalersIdAndClimbingGymId(
-          this.localTopWay.state.userInfo.id,
-          this.id
-        )
-        .then((response) => {
-          console.log(response.data);
+      if(this.localTopWay.state.isLogin){
           this.scaler_Service
-            .detectFavorite(response.data[0].id)
+            .deleteFavorite(this.id, this.localTopWay.state.userInfo.id)
             .then((response) => {
               console.log(response.data);
-              this.$router.go(0);
-            });
+          this.$router.go(0);
         });
-    },
+      }
+    }
   },
 };
 /*.x{

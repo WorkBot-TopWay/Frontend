@@ -32,16 +32,16 @@ export class ScalerApiService{
     return http.get(`/scalers/${id}/favorites`);
   }
   findFavoriteByScalerId(id){
-    return http.get(`/favorites?scalerId=${id}`);
+    return http.get(`/favorites/${id}/climbing-gyms`);
   }
-  findFavoriteByscalersIdAndClimbingGymId(id,id2) {
-    return http.get(`/favorites?scalerId=${id}&climbingGymId=${id2}`);
+  findFavoriteByClimbingGymIdAndscalersId(climbingGymId,scalerId) {
+    return http.get(`/favorites?climbingGymId=${climbingGymId}&scalerId=${scalerId}`);
   }
-  createFavorite(data) {
-    return http.post("/favorites", data);
+  createFavorite(climbingGymId,scalerId,data) { // new
+    return http.post(`/favorites?climbingGymId=${climbingGymId}&scalerId=${scalerId}`, data);
   }
-  detectFavorite(id) {
-    return http.delete(`/favorites/${id}`);
+  deleteFavorite(climbingGymId,scalerId) { // new
+    return http.delete(`/favorites?climbingGymId=${climbingGymId}&scalerId=${scalerId}`);
   }
 
   ///// Notifications /////
