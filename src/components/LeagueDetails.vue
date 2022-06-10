@@ -44,7 +44,7 @@
             <img
               class="mt-3"
               alt="user header"
-              :src="leagues.url_photo"
+              :src="leagues.urlLogo"
               style="width: 70%"
             />
           </template>
@@ -53,11 +53,11 @@
             {{ leagues.name }}
           </template>
           <template #subtitle>
-            <span class="font"> Administrator: {{ isAdmin() }}</span
+            <span class="font"> Administrator: {{ leagues.adminName }}</span
             ><br />
             <span>Description: {{ leagues.description }} </span><br />
             <span
-              >Number of participants: {{ leagues.number_participants }}</span
+              >Number of participants: {{ leagues.numberParticipants }}</span
             >
           </template>
           <template #content>
@@ -65,7 +65,7 @@
               <h2 class="font">Awaiting Requests</h2>
               <div v-if="requestLeague.length > 0">
                 <DataTable
-                  :value="users"
+                  :value="requestLeague"
                   dataKey="id"
                   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                   :rowsPerPageOptions="[5, 10, 15]"
@@ -85,7 +85,7 @@
                           justify-content-center
                           m-2
                         "
-                        :image="slotProps.data.url_photo"
+                        :image="slotProps.data.urlPhoto"
                         size="large"
                         shape="circle"
                       />
@@ -94,8 +94,8 @@
                   <Column header="Name" sortable style="min-width: 2rem">
                     <template #body="slotProps">
                       <span
-                        >{{ slotProps.data.first_name }}
-                        {{ slotProps.data.last_name }}</span
+                        >{{ slotProps.data.firstName }}
+                        {{ slotProps.data.lastName }}</span
                       >
                     </template>
                   </Column>
@@ -110,7 +110,7 @@
                         @click="
                           requestReject(
                             slotProps.data.id,
-                            slotProps.data.first_name
+                            slotProps.data.firstName
                           )
                         "
                         label="Reject"
@@ -147,7 +147,7 @@
         />
       </div>
       <DataTable
-        :value="leagueCompetitions"
+        :value="userCompetition"
         dataKey="id"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 15]"
@@ -161,7 +161,7 @@
           <template #body="slotProps">
             <Avatar
               class="flex align-content-center justify-content-center m-2"
-              :image="slotProps.data.url_photo"
+              :image="slotProps.data.urlPhoto"
               size="large"
               shape="circle"
             />
@@ -170,14 +170,14 @@
         <Column header="Name" sortable style="min-width: 2rem">
           <template #body="slotProps">
             <span
-              >{{ slotProps.data.first_name }}
-              {{ slotProps.data.last_name }}</span
+              >{{ slotProps.data.firstName }}
+              {{ slotProps.data.lastName }}</span
             >
           </template>
         </Column>
-        <Column header="Type" sortable style="min-width: 2rem">
+        <Column header="District" sortable style="min-width: 2rem">
           <template #body="slotProps">
-            <span>{{ slotProps.data.type }}</span>
+            <span>{{ slotProps.data.district }}</span>
           </template>
         </Column>
         <Column header="Score" sortable style="min-width: 2rem">
@@ -195,7 +195,7 @@
     >
       <div class="confirmation-content">
         <DataTable
-          :value="usersLeague"
+          :value="users"
           dataKey="id"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 15]"
@@ -206,7 +206,7 @@
             <template #body="slotProps">
               <Avatar
                 class="flex align-content-center justify-content-center m-2"
-                :image="slotProps.data.url_photo"
+                :image="slotProps.data.urlPhoto"
                 size="large"
                 shape="circle"
               />
@@ -215,8 +215,8 @@
           <Column header="Name" sortable style="min-width: 2rem">
             <template #body="slotProps">
               <span
-                >{{ slotProps.data.first_name }}
-                {{ slotProps.data.last_name }}</span
+                >{{ slotProps.data.firstName }}
+                {{ slotProps.data.lastName }}</span
               >
             </template>
           </Column>
@@ -226,7 +226,7 @@
             </template>
           </Column>
           <Column
-            v-if="admin.id === localTopWay.state.userInfo.id"
+            v-if="leagues.scalerId === localTopWay.state.userInfo.id"
             header="Actions"
             style="min-width: 2rem"
           >
@@ -272,17 +272,17 @@
             <div class="p-fluid">
               <div class="field">
                 <label for="name_league">League name</label>
-                <InputText id="name_league" v-model="leagues.name" />
+                <InputText id="name_league" v-model="newLeague.name" />
               </div>
 
               <div class="field">
                 <label for="url_photo">Url Photo</label>
-                <InputText id="url_photo" v-model="leagues.url_photo" />
+                <InputText id="url_photo" v-model="newLeague.urlLogo" />
               </div>
 
               <div class="field">
                 <label for="description">Description (optional)</label>
-                <InputText id="description" v-model="leagues.description" />
+                <InputText id="description" v-model="newLeague.description" />
               </div>
             </div>
           </template>
@@ -321,6 +321,7 @@ export default {
     return {
       flag: true,
       leagues: {},
+      newLeague: {},
       nameSelected: "",
       leagueCompetitions: [],
       nameCompetition: [],
@@ -353,6 +354,8 @@ export default {
     },
   },
   async created() {
+    // revisar Competition
+    /*
     this.league_service
       .findCompetitionsByLeagueId(this.leagueId)
       .then((response) => {
@@ -368,55 +371,31 @@ export default {
         });
       });
 
-    this.scaler_Service.getAllNotifications().then((response) => {
-      if (response.data.length === 0) {
-        this.notificationId = 1;
-      }else {
-        this.notificationId = response.data[response.data.length - 1].id + 1;
-        console.log(this.notificationId, "notificationId");
-      }
-    });
+   */
+    // Ranking of the league
     this.league_service
-      .findAllLeaguesByLeagueId(this.leagueId)
-      .then((response) => {
-        response.data.forEach((element) => {
-          this.scaler_Service.findById(element.scalerId).then((response) => {
-            this.usersLeague.push(response.data);
-            console.log(this.usersLeague, "usersLeague");
-          });
-        });
+      .findCompetitionRankingsByLeagueId(this.leagueId).then((response) => {
+        this.nameCompetition = response.data;
+        this.nameSelected = this.nameCompetition[this.nameCompetition.length - 1];
+        this.leagueCompetitionsData();
       });
-    this.league_service.findLeagueById(this.leagueId).then((response) => {
-      this.leagues = response.data;
-      console.log(this.leagues);
-      this.league_service
-        .findClimbingIdByLeagueIdAndScalerId(
-          this.localTopWay.state.userInfo.id,
-          this.leagues.id
-        )
-        .then((element) => {
-          this.userClimber = element.data;
-          console.log(this.userClimber, "user climber");
-        });
-      this.scaler_Service.findById(this.leagues.scalerId).then((response) => {
-        this.admin = response.data;
-      });
+    ////
+
+    this.league_service.findScalersByLeagueId(this.leagueId).then((response) => {
+      this.users = response.data;
+      console.log(this.users, "users");
     });
+      // Request League
     this.league_service
-      .findRequestsByLeagueId(this.leagueId)
+      .getAllRequestsByLeagueId(this.leagueId)
       .then((response) => {
         this.requestLeague = response.data;
-        console.log(this.requestLeague);
-        this.requestLeague.forEach((element) => {
-          console.log(element.scalerId);
-          this.scaler_Service.findById(element.scalerId).then((response) => {
-            this.users.push(response.data);
-          });
-        });
+        console.log(this.requestLeague, "requestLeague");
       });
-    /// Climber ///
-    this.league_service.getAllLeagues().then((response) => {
-      this.climberId = response.data;
+    // League
+    this.league_service.findLeagueById(this.leagueId).then((response) => {
+      this.leagues = response.data;
+      console.log(this.leagues, "leagues here");
     });
   },
   methods: {
@@ -431,6 +410,7 @@ export default {
     },
     openEditInformation() {
       this.editInformation = true;
+      this.newLeague=this.leagues;
     },
     isMyLeague(id) {
       if (this.leagues.scalerId === id) {
@@ -440,20 +420,22 @@ export default {
       }
     },
     nextPage() {
-      if (this.leagues.name !== "" && this.leagues.url_photo !== "") {
-        this.league_service.update(this.leagues.id, this.leagues).then(() => {
+      if (this.newLeague.name !== "" && this.newLeague.urlLogo !== "") {
+        let data = {}
+            data.name = this.newLeague.name,
+            data.urlLogo=this.newLeague.urlLogo,
+            data.description= this.newLeague.description,
+              console.log(data, "data");
+        this.league_service.update(data,this.leagueId).then((response) => {
           this.editInformation = false;
           this.submitted = false;
           this.validationErrors = {};
+          console.log(response.data, "Nota");
         });
         alert("Data was updated");
       } else {
         alert("Please fill all the fields");
       }
-    },
-    isAdmin() {
-      console.log(this.users);
-      return this.admin.first_name + " " + this.admin.last_name;
     },
     requestUser(id) {
       console.log(id);
@@ -568,24 +550,17 @@ export default {
     addRanking() {
       this.$router.push(`/Ranking/${this.leagues.name}/${this.leagues.id}`);
     },
-    loadingCompetition(index) {
-      this.userCompetition = [];
-      var type = this.Competitions[index].type;
-      this.Competitions[index].competitions_ranking.forEach((response) => {
-        var score = response.score;
-        this.scaler_Service.findById(response.scalerId).then((response) => {
-          let data = {};
-          data = response.data;
-          data.score = score;
-          data.type = type;
-          this.userCompetition.push(data);
-        });
-      });
-    },
     leagueCompetitionsData() {
       this.leagueCompetitions = [];
-      this.loadingCompetition(this.nameSelected.index);
-      this.leagueCompetitions = this.userCompetition;
+     this.league_service.findScalersByCompetitionLeagueId(this.nameSelected.id).then((response) => {
+     this.userCompetition = response.data;
+      this.userCompetition.forEach((response) => {
+        this.league_service.findCompetitionLeagueByCompetitionLeagueIdAndScalerId(this.nameSelected.id, response.id).then((info) => {
+          response.score=info.data.score;
+        });
+      });
+      console.log(this.userCompetition, "userCompetition");
+     });
     },
   },
 };

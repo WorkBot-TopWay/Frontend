@@ -84,7 +84,7 @@
     </div>
     <div
       class="features x flex align-content-start flex-column"
-      style="width: 50%"
+      style="width: 45%"
     >
       <div
         class="flex justify-content-center align-items-center m-1 mt-5"
@@ -96,7 +96,7 @@
           size="xlarge"
           shape="circle"
         />
-        <span class="text-center text-900 text-5xl font-semibold">{{
+        <span class="font text-center text-900 text-5xl font-semibold">{{
           climbing_gym.name
         }}</span>
       </div>
@@ -318,74 +318,72 @@
         ranking
         x
         flex
-        align-content-start
-        justify-content-center
+        align-content-center
+        justify-content-start
         flex-column
       "
-      v-if="informationObject(ranking)"
-      style="width: 25%"
+      v-if="informationObject(nameCompetition)"
+      style="width: 30%"
     >
       <h1 class="font text-xl font-semibold text-center">Ranking section</h1>
-      <div
-        class="flex flex-row align-content-start justify-content-center bor"
-        style="width: 90%; margin: auto; margin-bottom: 0"
-      >
-        <p class="text-center font" style="width: 15%">N°</p>
-        <p class="text-center font" style="width: 60%">Competitor</p>
-        <p class="text-center font" style="width: 25%">Score</p>
+      <div class="flex align-items-center justify-content-center mb-3">
+        <Dropdown
+          inputId="class"
+          v-model="nameSelected"
+          :options="nameCompetition"
+          optionLabel="name"
+          placeholder="Select a type"
+          style="width: 14rem; height: 2.5rem"
+        />
+        <Button
+          label="Select"
+          class="p-button-success ml-2"
+          style="height: 2.5rem; width: 8rem"
+          @click="GymCompetitionsData()"
+        />
       </div>
-      <div
-        class="tabla flex flex-row b"
-        style="
-          width: 90%;
-          height: 80vh;
-          overflow: auto;
-          margin: auto;
-          margin-top: 0;
-        "
-      >
-        <div class="pos flex flex-column" style="width: 15%">
-          <div
-            class="flex align-content-center justify-content-center button"
-            v-for="rank of ranking"
-            :key="rank"
-            style="height: 60px"
-          >
-            <p class="font">{{ rank.position }}</p>
-          </div>
-        </div>
-        <div class="participant flex flex-column" style="width: 60%">
-          <div
-            class="flex align-content-center justify-content-center button"
-            v-for="user of participants"
-            :key="user"
-            style="height: 60px"
-          >
-            <Avatar
-              class="flex align-content-center justify-content-center m-2"
-              :image="user.url_photo"
-              size="large"
-              shape="circle"
-            />
-            <p class="text-center font">
-              {{ user.first_name }} {{ user.last_name }}
-            </p>
-          </div>
-        </div>
-        <div class="score flex flex-column" style="width: 25%">
-          <div
-            class="flex align-content-center justify-content-center button"
-            v-for="rank of ranking"
-            :key="rank"
-            style="height: 60px"
-          >
-            <p class="font flex align-content-center justify-content-center">
-              {{ rank.score }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DataTable
+      :value="userCompetition"
+      dataKey="id"
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      :rowsPerPageOptions="[5, 10, 15]"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} request"
+      responsiveLayout="scroll"
+    >
+      <template #header>
+        <h3 class=" font text-center" >{{ nameSelected.name }}</h3>
+      </template>
+      <Column field="url_photo" header="Photo" style="min-width: 1rem">
+        <template #body="slotProps">
+          <Avatar
+            class="flex align-content-center justify-content-center m-2"
+            :image="slotProps.data.urlPhoto"
+            size="large"
+            shape="circle"
+          />
+        </template>
+      </Column>
+      <Column header="Name" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+            <span
+            >{{ slotProps.data.firstName }}
+              {{ slotProps.data.lastName }}</span
+            >
+        </template>
+      </Column>
+      <Column header="District" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.district }}</span>
+        </template>
+      </Column>
+      <Column header="Score" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.score }}</span>
+        </template>
+      </Column>
+    </DataTable>
+
+  </div>
     <div
       class="flex justify-content-center align-items-start"
       v-else
@@ -396,6 +394,7 @@
       </p>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -419,6 +418,9 @@ export default {
       news: [],
       climbing_gym: {},
       images: [],
+      userCompetition:[],
+      nameSelected: {},
+      nameCompetition: [],
       climbing_gym_Service: new ClimbingGymsApiService(),
       scaler_Service: new ScalerApiService(),
       localTopWay: LocalStoreTopWay,
@@ -508,6 +510,11 @@ export default {
       .catch((e) => {
         console.log(e);
       });*/
+    this.climbing_gym_Service.findCompetitionByClimbingGymId(this.id).then((response) => {
+      this.nameCompetition = response.data;
+      this.nameSelected = this.nameCompetition[this.nameCompetition.length - 1];
+      this.GymCompetitionsData();
+    });
     /////////// Comments Climbing Gym Data  ////////////
     this.climbing_gym_Service
       .findCommentById(this.id)
@@ -548,6 +555,18 @@ export default {
       let dateHour = new Date(date);
       let dateMinute = new Date(date);
       return dateHour.getHours()+":"+dateMinute.getMinutes();
+    },
+    GymCompetitionsData() {
+      this.leagueCompetitions = [];
+      this.climbing_gym_Service.findScaleRankingByCompetitionGymId(this.nameSelected.id).then((response) => {
+        this.userCompetition = response.data;
+        this.userCompetition.forEach((response) => {
+          this.climbing_gym_Service.findCompetitionRankingByCompetitionGymIdAndScalerId(this.nameSelected.id, response.id).then((info) => {
+            response.score=info.data.score;
+          });
+        });
+        console.log(this.userCompetition, "userCompetition");
+      });
     },
     informationObject(object) {
       if (

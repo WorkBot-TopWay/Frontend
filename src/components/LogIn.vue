@@ -74,7 +74,6 @@ export default {
       validationErrors: {},
       scaler_Service: new ScalerApiService(),
       user: [],
-      type_click: [],
       email: "",
       re: "",
       store: store,
@@ -82,26 +81,26 @@ export default {
     };
   },
   setup() {},
-  mounted() {
-    this.scaler_Service.getAll().then((response) => {
-      this.user = response.data;
-    });
-  },
+  mounted() {},
   methods: {
     nextPage() {
       this.submitted = true;
       if (this.validateForm()) {
-        this.user.forEach((element) => {
-          if (
-            element.email == this.email &&
-            element.password == this.password
-          ) {
-            this.localTopWay.state.isLogin = true;
-            this.localTopWay.state.userInfo = element;
-            localStorage.user = JSON.stringify(element);
-            this.$router.push("/");
-          }
-        });
+          this.scaler_Service.findByEmailAndPassword(this.email, this.password)
+            .then((res) => {
+              if(res.data != null||res.data != undefined|| res.data.length > 0){
+                this.localTopWay.state.isLogin = true;
+                this.localTopWay.state.userInfo =res.data;
+                localStorage.user = JSON.stringify(res.data);
+                this.$router.push("/");
+              }
+            }).catch((err) => {
+              console.log(err, "errorn here");
+            alert("Invalid email or password");
+            this.validationErrors.email = true;
+            this.validationErrors.password = true;
+            this.submitted = false;
+            });
       }
     },
     validateForm() {

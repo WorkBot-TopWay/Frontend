@@ -56,7 +56,21 @@ export class ClimbingGymsApiService {
     return http.get("/categories");
   }
 
+  //Competition of climbing gyms
+
+  findCompetitionByClimbingGymId(id) {
+    return http.get(`/competition-gyms?climbingGymId=${id}`);
+  }
+
+// Competition ranking of climbing gyms
+  findScaleRankingByCompetitionGymId(id) {
+    return http.get(`/competition-gym-rankings/${id}/scalers`);
+  }
+  findCompetitionRankingByCompetitionGymIdAndScalerId(competitionGymId, scalerId) {
+    return http.get(`/competition-gym-rankings?competitionGymId=${competitionGymId}&scalerId=${scalerId}`);
+  }
 }
+
 /*
   //getAll() {
     return http.get("/climbingGyms/?_embed=category_gyms");

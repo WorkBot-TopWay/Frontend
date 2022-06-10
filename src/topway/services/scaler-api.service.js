@@ -1,5 +1,4 @@
 import http from "../../core/services/http-common";
-
 export class ScalerApiService{
   getAll() {
     return http.get("/scalers");
@@ -19,6 +18,10 @@ export class ScalerApiService{
   }
   findById(id) {
     return http.get(`/scalers/${id}`);
+  }
+
+  findByEmailAndPassword(email, password) {
+    return http.get(`/scalers?email=${email}&password=${password}`);
   }
 
   /////// Favorites ///////

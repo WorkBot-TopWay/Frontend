@@ -9,11 +9,13 @@
     "
   >
     <Card class="col-12 md:col-6 lg:col-10 mt-5 mb-5">
+
       <template v-slot:title> Ranking Information </template>
       <template v-slot:subtitle> Enter your ranking information </template>
       <template v-slot:content>
         <div class="p-fluid">
           <div class="field">
+            <div class="competition" v-if="!values">
             <label for="name">Competition name</label>
             <InputText
               id="name"
@@ -21,15 +23,15 @@
               :class="{ 'p-invalid': validationErrors.name && submitted }"
             />
             <small v-show="validationErrors.name && submitted" class="p-error"
-              >email is required.</small
+              >Name is required.</small
             >
-          </div>
+
           <div class="field">
             <label for="class">Type</label>
             <Dropdown
               inputId="class"
               v-model="selectedType"
-              :options="word"
+              :options="tags"
               optionLabel="name"
               placeholder="Select a type"
             />
@@ -39,6 +41,9 @@
               >Requires you to select one</small
             >
           </div>
+            </div>
+          </div>
+          <div class="Participants" v-if="values">
           <div class="flex flex-row align-items-center justify-content-between">
             <h2>Participants</h2>
             <Button
@@ -75,10 +80,11 @@
           <div v-else>
             <h3>There are no more participants to register</h3>
           </div>
+          </div>
         </div>
       </template>
       <template v-slot:footer>
-        <div class="grid grid-nogutter justify-content-between">
+        <div class="grid grid-nogutter justify-content-between" v-if="values">
           <i></i>
           <Button
             label="Next"
@@ -87,7 +93,17 @@
             iconPos="right"
           />
         </div>
+        <div class="grid grid-nogutter justify-content-between" v-if="!values">
+          <i></i>
+          <Button
+            label="Next"
+            @click="addCompetition()"
+            icon="pi pi-angle-right"
+            iconPos="right"
+          />
+        </div>
       </template>
+
     </Card>
   </div>
 </template>
@@ -106,12 +122,13 @@ export default {
       validationErrors: {},
       value: 0,
       index: 0,
+      competition: {},
+      values: false,
       object: {},
       usersLeague: [],
       name: "",
       selectedType: "",
-      word: [],
-      league: [],
+      league: {},
       competitions_ranking: [],
       tags: [],
       competitions_league: {
@@ -133,54 +150,31 @@ export default {
     },
   },
   async created() {
-    this.league_service.findAllCompetitions().then((response) => {
-      this.idRank = response.data.length + 1;
+    // user of the league
+    this.league_service.findScalersByLeagueId(this.leagueId).then((response) => {
+      this.usersLeague = response.data;
+      if (this.usersLeague.length > 0) {
+        this.object = this.usersLeague[0];
+      }
+
+      console.log(this.usersLeague, "users");
     });
-    this.league_service
-      .findAllLeaguesByLeagueId(this.leagueId)
-      .then((response) => {
-        response.data.forEach((element) => {
-          this.scaler_Service.findById(element.scalerId).then((response) => {
-            this.usersLeague.push(response.data);
-            if (this.submitted) {
-              this.object = this.usersLeague[0];
-              console.log(this.object, "object");
-              this.submitted = false;
-            }
-          });
-        });
-      });
+    // League
     this.league_service.findLeagueById(this.leagueId).then((response) => {
-      /////////// Tag Climbing Gym Data  ////////////
       this.league = response.data;
-      console.log(this.league, "league");
+      console.log(this.league, "leagues here");
+      /// Tag list
       this.climbing_gym_Service
-        .findClimbingById(this.league.climbingGymId)
-        .then((response) => {
-          this.tags = response.data.category_gyms;
-          this.tags.forEach((element) => {
-            this.climbing_gym_Service
-              .findCategoryNameById(element.categoryId)
-              .then((response) => {
-                let Tag = {};
-                Tag.name = response.data.name;
-                this.word.push(Tag);
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-            console.log(this.word);
-          });
-        })
-        .catch((e) => {
-          console.log(e);
+        .findCategoryByClimbingGymId(this.league.climbingGymId)
+        .then( response =>{
+          this.tags = response.data;
+          console.log(this.tags, "tags");
         });
-      ///////////////////////////////////////////
     });
   },
   methods: {
     fullName(user) {
-      return user.first_name + " " + user.last_name;
+      return user.firstName + " " + user.lastName;
     },
     scoreRank() {
       console.log(this.score, "score complete");
@@ -190,11 +184,11 @@ export default {
       if (this.validateForm()) {
         if (!(this.usersLeague.length === this.index)) {
           let aux = {
-            id: this.index,
-            scalerId: this.object.id,
             score: this.value,
           };
-          this.competitions_ranking.push(aux);
+          this.league_service.createCompetitionRankings(this.competition.id,this.object.id,aux).then((response) => {
+            console.log(response.data, "response");
+          });
         }
         this.index++;
         if (!(this.usersLeague.length === this.index)) {
@@ -203,7 +197,7 @@ export default {
         }
       }
     },
-    validateForm() {
+    validateFormCompetition() {
       if (!this.name.trim()) this.validationErrors["name"] = true;
       else delete this.validationErrors["name"];
 
@@ -211,29 +205,39 @@ export default {
         this.validationErrors["selectedType"] = true;
       else delete this.validationErrors["selectedType"];
 
+      return !Object.keys(this.validationErrors).length;
+    },
+    validateForm() {
       if (!this.value > 0) this.validationErrors["value"] = true;
       else delete this.validationErrors["value"];
 
       return !Object.keys(this.validationErrors).length;
     },
+    addCompetition() {
+        this.submitted = true;
+        if (this.validateFormCompetition()) {
+        let data={};
+        data.name = this.name;
+        data.type = this.selectedType.name;
+        console.log(data, "data competition");
+          this.league_service
+            .createCompetitions(this.leagueId, data).then((response) => {
+              if (response.status == 200) {
+                this.values = true;
+                this.league_service
+                  .findCompetitionsByLeagueId(this.leagueId).then((response) => {
+                  this.competition = response.data[response.data.length - 1];
+                  console.log(this.competition, "competition");
+                  });
+              }
+            });
+        }
+      },
     nextPage() {
       this.submitted = true;
       if (this.validateForm()) {
-        this.competitions_league.id = this.idRank;
-        this.competitions_league.leagueId = this.leagueId;
-        this.competitions_league.name = this.name;
-        this.competitions_league.type = this.selectedType.name;
-        this.competitions_league.date = new Date();
-        this.competitions_league.competitions_ranking =
-          this.competitions_ranking;
-        console.log(this.competitions_league, "competitions_league");
-        this.league_service
-          .createCompetitions(this.competitions_league)
-          .then((response) => {
-            console.log(response.data, "response");
             alert("Competition created successfully");
             this.$router.go(-1);
-          });
       }
     },
   },
