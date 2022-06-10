@@ -173,6 +173,7 @@ export default {
     },
     getNotifications() {
       if(this.localTopWay.state.isLogin){
+        // notifications
         this.scaler_Service.getAllNotificationsByScalerId(this.localTopWay.state.userInfo.id).then(response => {
           this.notifications = response.data;
           console.log(this.notifications.length, "Notifications")

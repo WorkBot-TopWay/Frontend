@@ -107,12 +107,7 @@
                         class="p-button-raised p-button-success mr-2"
                       />
                       <Button
-                        @click="
-                          requestReject(
-                            slotProps.data.id,
-                            slotProps.data.firstName
-                          )
-                        "
+                        @click=" requestReject(slotProps.data.id,slotProps.data.firstName)"
                         label="Reject"
                         class="p-button-raised p-button-danger"
                       />
@@ -354,24 +349,6 @@ export default {
     },
   },
   async created() {
-    // revisar Competition
-    /*
-    this.league_service
-      .findCompetitionsByLeagueId(this.leagueId)
-      .then((response) => {
-        var num = 0;
-        this.Competitions = response.data;
-        this.Competitions.forEach((element) => {
-          let aux = {};
-          aux.name = element.name;
-          aux.index = num;
-          num++;
-          this.nameCompetition.push(aux);
-          console.log(this.nameCompetition, "nameCompetition hereeeee");
-        });
-      });
-
-   */
     // Ranking of the league
     this.league_service
       .findCompetitionRankingsByLeagueId(this.leagueId).then((response) => {
@@ -440,59 +417,39 @@ export default {
     requestUser(id) {
       console.log(id);
     },
-    requestAccept(id) {
-      this.leagues.number_participants++;
-      let data ={
-        id: this.notificationId,
-        scalerId: id,
-        message: "Your request to join the league " + this.leagues.name + " was accepted"
-      }
-      this.scaler_Service.createNotification(data).then(() => {
-        this.notificationId++;
+    requestAccept(ScalerId) {
+      // Request League accepted
+      let data={};
+      this.league_service.createClimberLeagues(this.leagues.climbingGymId, ScalerId, this.leagues.id, data)
+        .then(response => {
+          console.log(response, "response league accepted");
+        });
+      // Delete request
+      this.league_service.deleteRequestByScalerIdAndLeagueId(ScalerId, this.leagues.id).then(response => {
+        console.log(response, "response delete request");
+        this.$router.go(0);
       });
-      this.league_service
-        .update(this.leagues.id, this.leagues)
-        .then((response) => {
-          console.log(response);
-        });
-      this.newClimbersLeague.id =
-        this.climberId[this.climberId.length - 1].id + 1;
-      this.newClimbersLeague.leagueId = this.leagues.id;
-      this.newClimbersLeague.scalerId = id;
-      this.newClimbersLeague.climbingGymId = this.leagues.climbingGymId;
-      console.log(this.newClimbersLeague);
-      this.league_service
-        .createClimbersLeague(this.newClimbersLeague)
-        .then((response) => {
-          console.log(response);
-        });
-      this.league_service
-        .deleteRequests(this.findRequest(id))
-        .then((response) => {
-          console.log(this.id, "deleted");
-          console.log(response);
-          this.$router.go(0);
-        });
+      // Notification accepted
+      let dataNotification = {};
+      dataNotification.message = `Your request to join ${this.leagues.name} was accepted`;
+      this.scaler_Service.createNotification(ScalerId, dataNotification).then(response => {
+        console.log(response, "response notification");
+      });
     },
-    requestReject(id, name) {
+    requestReject(ScalerId, name) {
       let index = confirm(`Are you sure you want to reject ${name}?`);
       if (index) {
-        this.league_service
-          .deleteRequests(this.findRequest(id))
-          .then((response) => {
-            console.log(this.id, "deleted");
-            console.log(response);
-            let data ={
-              id: this.notificationId,
-              scalerId: id,
-              message: `Your request to join the league ${this.leagues.name} was rejected`,
-            }
-
-            this.scaler_Service.createNotification(data).then(() => {
-              this.notificationId++;
-            });
-            this.$router.go(0);
-          });
+        // Delete request
+        this.league_service.deleteRequestByScalerIdAndLeagueId(ScalerId, this.leagues.id).then(response => {
+          console.log(response, "response delete request");
+          this.$router.go(0);
+        });
+        //Notification to the user
+        let data = {};
+        data.message = `Your request to join ${this.leagues.name} was rejected`;
+        this.scaler_Service.createNotification(ScalerId, data).then(response => {
+          console.log(response, "response notification");
+        });
       }
     },
     findRequest(id) {
@@ -506,42 +463,27 @@ export default {
     async leaveLeague() {
       let index = confirm(`Are you sure you want to leave this league?`);
       if (index) {
-        this.leagues.number_participants--;
-        this.league_service
-          .update(this.leagues.id, this.leagues)
-          .then((response) => {
-            console.log(response);
-          });
-
-        this.league_service
-          .deleteClimbersLeague(this.userClimber[0].id)
-          .then((response) => {
-            console.log(this.id, "deleted");
-            console.log(response);
-            this.$router.go(-1);
-          });
+        this.league_service.deleteClimberLeagues(this.leagues.climbingGymId, this.localTopWay.state.userInfo.id, this.leagues.id).then((response) => {
+          console.log(response, "response delete climber league");
+          this.$router.go(-1);
+        });
       }
     },
     async deleteMember(id) {
       let index = confirm(`Are you sure?`);
-      if (index && id !== this.admin.id) {
-        this.leagues.number_participants--;
-        this.league_service
-          .update(this.leagues.id, this.leagues)
-          .then((response) => {
-            console.log(response);
+      if (index && id !== this.leagueId.scalerId) {
+          this.league_service.deleteClimberLeagues(this.leagues.climbingGymId, id, this.leagues.id).then((response) => {
+            console.log(response, "response delete climber league");
+            this.$router.go(0);
           });
-        this.league_service
-          .findClimbingIdByLeagueIdAndScalerId(id, this.leagues.id)
-          .then((element) => {
-            this.league_service
-              .deleteClimbersLeague(element.data[0].id)
-              .then((response) => {
-                console.log(response, "deleted");
-                this.$router.go(0);
-              });
-          });
+        //Notification to the user
+        let data = {};
+        data.message = `You were eliminated from the ${this.leagues.name} league`;
+        this.scaler_Service.createNotification(id, data).then(response => {
+          console.log(response, "response notification");
+        });
       } else {
+        console.log("id",id,"su id",this.localTopWay.state.userInfo.id);
         alert(
           "You cannot delete yourself, as you are the league administrator."
         );

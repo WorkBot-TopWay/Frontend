@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="filterByLeague.length > 0"
+    v-if="LeaguesTheGym.length > 0"
     class="flex align-content-center justify-content-center m-3 flex-column"
   >
     <div class="flex align-content-center justify-content-center">
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div
-    v-if="filterByLeague.length > 0"
+    v-if="LeaguesTheGym.length > 0"
     class="flex align-content-end justify-content-center"
   >
     <div class="flex flex-wrap m-3 bg-black-alpha-10" style="width: 85%">
@@ -25,7 +25,7 @@
         style="width: 17em"
       >
         <template #header>
-          <img alt="user header" :src="league.url_photo" />
+          <img alt="user header" :src="league.urlLogo" />
         </template>
 
         <template #title>
@@ -33,7 +33,7 @@
         </template>
 
         <template #content>
-          <span>Number of participants: {{ league.number_participants }}</span>
+          <span>Number of participants: {{ league.numberParticipants }}</span>
         </template>
 
         <template #subtitle>
@@ -81,6 +81,7 @@ export default {
       filter: "",
       status: ["Send request", "Request sent", "You are already a member"],
       request: [],
+      requests: [],
       idRequest: 0,
       id: 0,
       flag: 0,
@@ -111,7 +112,7 @@ export default {
       }
     },
   },
-  created() {
+  created() {/*
     this.league_service
       .findAllLeaguesByClimbingGymId(this.climbingGymId)
       .then((response) => {
@@ -131,34 +132,49 @@ export default {
       .findRequestsByScalerId(this.localTopWay.state.userInfo.id)
       .then((response) => {
         this.request = response.data;
+      });*/
+
+    //Load all leagues by climbing gym id
+    this.league_service
+      .findLeagueByClimbingGymId(this.climbingGymId)
+      .then((response) => {
+        this.LeaguesTheGym = response.data;
       });
+    //Load League of the user
+  this.league_service.findLeaguesByClimbingGymIdAndScalerId(this.climbingGymId, this.localTopWay.state.userInfo.id).then((response) => {
+    this.listUserLeagues = response.data;
+  });
+  //Load all requests of the user
+    this.league_service.findRequestsLeagueByScalerId(this.localTopWay.state.userInfo.id).then((response) => {
+      this.requests = response.data;
+    });
+
   },
   methods: {
     youAreAlreadyAMember() {
       alert("You are already a member");
     },
     youAreAlreadyPart(id) {
-      console.log(this.listUserLeagues, "listUserLeagues");
-      for (let index of this.listUserLeagues) {
-        if (
-          this.localTopWay.state.userInfo.id == index.scalerId &&
-          index.leagueId == id
-        ) {
+      for (let i = 0; i < this.listUserLeagues.length; i++) {
+        if (this.listUserLeagues[i].id === id) {
+          console.log("true");
           return true;
         }
       }
+      console.log("false");
       return false;
     },
     requestSent(id) {
-      for (let index of this.request) {
-        if (
-          index.leagueId === id &&
-          index.scalerId === this.localTopWay.state.userInfo.id
-        ) {
-          return true;
+      if(this.requests.length === 0){
+        return false;
+      }else {
+        for (let i = 0; i < this.requests.length; i++) {
+          if (this.requests[i].leagueId === id) {
+            return true;
+          }
         }
+        return false;
       }
-      return false;
     },
     requestSentData(id) {
       let index = confirm(
@@ -166,7 +182,7 @@ export default {
       );
       if (index) {
         this.league_service
-          .deleteRequests(this.findRequest(id))
+          .deleteRequestByScalerIdAndLeagueId(this.localTopWay.state.userInfo.id, id)
           .then((response) => {
             console.log(this.id, "deleted");
             console.log(response);
@@ -176,21 +192,12 @@ export default {
     },
     sendRequest(id) {
       alert("You have already submitted a request");
-      this.newRequest.id = this.idRequest.length + 1;
-      this.newRequest.leagueId = id;
-      this.newRequest.scalerId = this.localTopWay.state.userInfo.id;
+      let data={};
       ///// Loading the request /////
-      this.league_service.createRequests(this.newRequest).then((response) => {
+      this.league_service.createRequestByScalerIdAndLeagueId(this.localTopWay.state.userInfo.id, id,data).then((response) => {
         console.log(response);
         this.$router.go(0);
       });
-    },
-    findRequest(id) {
-      for (let index of this.request) {
-        if (index.leagueId === id) {
-          return index.id;
-        }
-      }
     },
   },
 };

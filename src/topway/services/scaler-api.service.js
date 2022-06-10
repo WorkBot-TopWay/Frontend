@@ -48,14 +48,11 @@ export class ScalerApiService{
   }
 
   ///// Notifications /////
-  getAllNotifications() {
-    return http.get("/notifications");
-  }
   getAllNotificationsByScalerId(id) {
     return http.get(`/notifications?scalerId=${id}`);
   }
-  createNotification(data) {
-    return http.post("/notifications", data);
+  createNotification(scalerId,data) {
+    return http.post(`/notifications?scalerId=${scalerId}`, data);
   }
   deleteNotification(id) {
     return http.delete(`/notifications/${id}`);
