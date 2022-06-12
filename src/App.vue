@@ -95,7 +95,7 @@ export default {
         {
           label:'Profile',
           icon:'pi pi-fw pi-user',
-          url:"https://www.google.com/",
+          to:'/MyProfile',
           visible: false
         },
         {

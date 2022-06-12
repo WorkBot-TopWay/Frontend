@@ -54,7 +54,7 @@
         <div class="grid grid-nogutter justify-content-between">
           <i></i>
           <Button
-            label="Next"
+            label="To Accept"
             class="p-button-success"
             @click="nextPage()"
             icon="pi pi-angle-right"
@@ -76,9 +76,11 @@ export default {
   data: () => {
     return {
       submitted: false,
+      value: true,
       validationErrors: {},
       league: [],
       climberId: 0,
+      climberLeague: [],
       id: 0,
       name_league: "",
       url_photo: "",
@@ -87,21 +89,6 @@ export default {
       localTopWay: LocalStoreTopWay,
       climbing_gym_Service: new ClimbingGymsApiService(),
       nameGym: "",
-      newClimbersLeague: {
-        id: 0,
-        scalerId: 0,
-        leagueId: 0,
-        climbingGymId: 0,
-      },
-      newLeague: {
-        id: 0,
-        scalerId: 0,
-        climbingGymId: 0,
-        name: "",
-        description: "",
-        url_photo: "",
-        number_participants: 1,
-      },
     };
   },
   computed: {
@@ -120,31 +107,30 @@ export default {
       .then((response) => {
         this.nameGym = response.data.name;
       });
-    /// Climber ///
-    this.league_service.getAllLeagues().then((response) => {
-      this.climberId = response.data.length + 1;
-    });
   },
   methods: {
-    nextPage() {
+    async nextPage() {
       this.submitted = true;
       if (this.validateForm()) {
-        this.newLeague.id = this.id;
-        this.newLeague.name = this.name_league;
-        this.newLeague.description = this.description;
-        this.newLeague.url_photo = this.url_photo;
-        this.newLeague.scalerId = this.localTopWay.state.userInfo.id;
-        this.newLeague.climbingGymId = this.climbingGymId;
-        ////ClimbersLeague////
-        this.newClimbersLeague.id = this.climberId;
-        this.newClimbersLeague.scalerId = this.localTopWay.state.userInfo.id;
-        this.newClimbersLeague.leagueId = this.id;
-        this.newClimbersLeague.climbingGymId = this.climbingGymId;
-
-        console.log(this.newLeague, this.newClimbersLeague);
-        this.createLeague(this.newLeague, this.newClimbersLeague);
-        alert("Registro lo datos correctamente");
-        this.$router.push(`/${this.nameGym}/${this.climbingGymId}/MyLeagues`);
+        // Create new league
+          let data ={};
+          data.name=this.name_league;
+          data.urlLogo=this.url_photo;
+          data.description=this.description;
+          this.league_service.create(this.climbingGymId, this.localTopWay.state.userInfo.id, data).then((response) => {
+          console.log(response);
+            alert("Registro lo datos correctamente");
+            //this.value=false;
+            let dataClimberLeague = {};
+            this.league_service.findLeagueByClimbingGymId(this.climbingGymId).then((response) => {
+              this.climberLeague=response.data[response.data.length-1];
+              console.log(this.climberLeague, "climberLeague data");
+              this.league_service.createClimberLeagues(this.climbingGymId, this.localTopWay.state.userInfo.id,  this.climberLeague.id, dataClimberLeague).then((response) => {
+                console.log(response);
+                this.$router.push(`/${this.nameGym}/${this.climbingGymId}/MyLeagues`);
+              });
+            });
+        });
       }
     },
     validateForm() {
@@ -156,25 +142,18 @@ export default {
 
       return !Object.keys(this.validationErrors).length;
     },
-    createLeague(league, climbersLeague) {
-      ///// New ClimbersLeague /////
-      this.league_service
-        .createClimbersLeague(climbersLeague)
-        .then((response) => {
+    createClimberLeague() {
+      ////ClimbersLeague////
+      let dataClimberLeague = {};
+      this.league_service.findLeagueByClimbingGymId(this.climbingGymId).then((response) => {
+        this.climberLeague=response.data[response.data.length-1];
+        console.log(this.climberLeague, "climberLeague data");
+        this.league_service.createClimberLeagues(this.climbingGymId, this.localTopWay.state.userInfo.id,  this.climberLeague.id, dataClimberLeague).then((response) => {
           console.log(response);
-        })
-        .catch((e) => {
-          console.log(e);
+
+          this.$router.push(`/${this.nameGym}/${this.climbingGymId}/MyLeagues`);
         });
-      ///// New League /////
-      this.league_service
-        .create(league)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      });
     },
   },
 };

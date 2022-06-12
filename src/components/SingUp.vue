@@ -63,7 +63,7 @@
           <i></i>
           <Button
             label="Next"
-            @click="nextPage(), showError()"
+            @click="nextPage()"
             icon="pi pi-angle-right"
             iconPos="right"
           />
@@ -151,17 +151,6 @@ export default {
       if (this.selectedType && event.value) {
         this.selectedType = event.value;
       }
-    },
-    showError() {
-      console.log("Error, llego a Toast");
-      const toast = useToast();
-      if (!this.validateForm())
-        toast.add({
-          severity: "error",
-          summary: "Error Message",
-          detail: "Message Content",
-          life: 3000,
-        });
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="flex align-content-end justify-content-center">
-    <div class="flex flex-wrap m-3 bg-black-alpha-10" style="width: 85%">
+    <div class="flex flex-wrap m-3 bg-black-alpha-10" style="width: 85%" v-if="informationObject(favorites)">
       <Card
         class="m-3 col-12 md:col-6 lg:col-3"
         v-for="gym of favorites"
@@ -29,6 +29,9 @@
           </Button>
         </template>
       </Card>
+    </div>
+    <div v-else>
+      <h2 class="font">You do not follow any climbing gym</h2>
     </div>
   </div>
 </template>
@@ -60,9 +63,25 @@ export default {
       console.log(id, "See more");
       this.$router.push(`/features/${id}/${name}`);
     },
+    informationObject(object) {
+      if (
+        object === undefined ||
+        object === null ||
+        Object.entries(object).length === 0
+      ) {
+        return false;
+      }
+      return true;
+    }
   },
 };
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Suez+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,500&display=swap");
+
+.font {
+  font-family: "Open Sans", sans-serif;
+}
 </style>

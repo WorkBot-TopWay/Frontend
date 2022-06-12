@@ -11,7 +11,7 @@
   >
     <Card class="col-12 md:col-6 lg:col-10">
       <template v-slot:title> Personal Information </template>
-      <template v-slot:subtitle> Enter your personal information </template>
+      <template v-slot:subtitle> Enter your personal information</template>
       <template v-slot:content>
         <div class="p-fluid">
           <div class="field">
@@ -108,7 +108,7 @@
           <Button label="Back" @click="prevPag()" icon="pi pi-angle-left" />
           <Button
             label="Next"
-            @click="nextPage(), showSuccess()"
+            @click="nextPage()"
             icon="pi pi-angle-right"
             iconPos="right"
           />
@@ -180,17 +180,18 @@ export default {
       this.submitted = true;
       console.log(this.districtSelected.value);
       if (this.validateForm()) {
-        this.newClimber.id = this.store.state.id;
-        this.newClimber.first_name = this.first_name;
-        this.newClimber.last_name = this.last_name;
-        this.newClimber.email = this.store.state.email;
-        this.newClimber.password = this.store.state.password;
-        this.newClimber.district = this.districtSelected.value;
-        this.newClimber.address = this.address;
-        this.newClimber.url_photo = this.url_photo;
-        this.newClimber.phone = this.phone;
-        this.newClimber.type = this.store.state.type;
-        this.createClimbing(this.newClimber);
+        let data ={};
+        data.firstName = this.first_name;
+        data.lastName = this.last_name;
+        data.password = this.store.state.password;
+        data.email= this.store.state.email;
+        data.city= "Lima";
+        data.district= this.districtSelected.value;
+        data.address= this.address;
+        data.phone= String(this.phone);
+        data.urlPhoto= this.url_photo;
+        this.createClimbing(data);
+        console.log(data);
         this.$router.push("/");
       }
     },
@@ -231,18 +232,11 @@ export default {
         .create(climber)
         .then((response) => {
           console.log(response);
+          alert("The user was created successfully");
         })
         .catch((e) => {
           console.log(e);
         });
-    },
-    showSuccess() {
-      this.$toast.add({
-        severity: "success",
-        summary: "Success Message",
-        detail: "Message Content",
-        life: 3000,
-      });
     },
   },
 };
