@@ -86,7 +86,10 @@ export default {
     nextPage() {
       this.submitted = true;
       if (this.validateForm()) {
-          this.scaler_Service.findByEmailAndPassword(this.email, this.password)
+        let data={};
+        data.email=this.email;
+        data.password=this.password;
+          this.scaler_Service.signIn(data)
             .then((res) => {
               if(res.data != null||res.data != undefined|| res.data.length > 0){
                 this.localTopWay.state.isLogin = true;

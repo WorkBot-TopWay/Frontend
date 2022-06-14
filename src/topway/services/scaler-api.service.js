@@ -7,6 +7,12 @@ export class ScalerApiService{
   get(id) {
     return http.get(`/scalers/${id}`);
   }
+  signIn(data) {
+    return http.post(`/scalers/sign-in`, data);
+  }
+  signUp(data) {
+    return http.post(`/scalers/sign-up`, data);
+  }
   create(data) {
     return http.post("/scalers", data);
   }

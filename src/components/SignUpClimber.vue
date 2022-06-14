@@ -229,10 +229,10 @@ export default {
     },
     createClimbing(climber) {
       this.scaler_Service
-        .create(climber)
+        .signUp(climber)
         .then((response) => {
           console.log(response);
-          alert("The user was created successfully");
+          alert(`${response.data.message}`);
         })
         .catch((e) => {
           console.log(e);
