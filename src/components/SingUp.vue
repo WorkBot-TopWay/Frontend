@@ -107,10 +107,6 @@ export default {
     };
   },
   mounted() {
-    this.scaler_Service.getAll().then((response) => {
-      this.user = response.data;
-      this.id = this.user.length + 1;
-    });
   },
   methods: {
     nextPage() {

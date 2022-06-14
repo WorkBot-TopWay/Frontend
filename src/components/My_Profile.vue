@@ -29,16 +29,31 @@
               >
             </div>
             <div class="field">
-              <label class="label">Password</label>
+              <label class="label">New Password</label>
               <Password
                 type="text"
-                v-model="password"
+                v-model="password1"
                 placeholder="Please enter a password"
-                :class="{ 'p-invalid': validationErrors.password && submitted }"
+                :class="{ 'p-invalid': validationErrors.password1 && submitted }"
                 toggleMask
               ></Password>
               <small
-                v-show="validationErrors.password && submitted"
+                v-show="validationErrors.password1 && submitted"
+                class="p-error"
+              >requires entering a password</small
+              >
+            </div>
+            <div class="field">
+              <label class="label">Confirm Password</label>
+              <Password
+                type="text"
+                v-model="password2"
+                placeholder="Please enter a password"
+                :class="{ 'p-invalid': validationErrors.password2 && submitted }"
+                toggleMask
+              ></Password>
+              <small
+                v-show="validationErrors.password2 && submitted"
                 class="p-error"
               >requires entering a password</small
               >
@@ -162,7 +177,9 @@ export default {
       first_name: "",
       districtSelected: "",
       address: "",
-      password: "",
+      password1: "",
+      password2: "",
+      same: true,
       email: "",
       url_photo: "",
       phone: 0,
@@ -185,7 +202,7 @@ export default {
   mounted() {
     this.email= this.localTopWay.state.userInfo.email;
     this.phone = this.localTopWay.state.userInfo.phone;
-    this.password = this.localTopWay.state.userInfo.password;
+    this.password = "";
     this.first_name = this.localTopWay.state.userInfo.firstName;
     this.last_name = this.localTopWay.state.userInfo.lastName;
     this.districtSelected = {name:this.localTopWay.state.userInfo.district, value:this.localTopWay.state.userInfo.district};
@@ -196,11 +213,11 @@ export default {
     nextPage() {
       this.submitted = true;
       console.log(this.districtSelected.value);
-      if (this.validateForm()) {
+      if (this.validateForm()&&this.same) {
         let data ={};
         data.firstName = this.first_name;
         data.lastName = this.last_name;
-        data.password = this.password;
+        data.password = this.password1;
         data.city= "Lima";
         data.district= this.districtSelected.value;
         data.address= this.address;
@@ -209,8 +226,8 @@ export default {
         data.email= this.email;
         console.log(data);
         this.scaler_Service.update(this.localTopWay.state.userInfo.id, data).then(response => {
-          this.localTopWay.state.userInfo = response.data;
-          this.$router.push("/");
+          console.log(response);
+          alert("Information updated successfully, you will see the changes when you log back in");
         });
       }
     },
@@ -221,8 +238,18 @@ export default {
       }
     },
   validateForm() {
-    if (!this.password.trim()) this.validationErrors["password"] = true;
-    else delete this.validationErrors["password"];
+      if(this.password1!=="" || this.password2!==""){
+        if (!this.password1.trim()||this.password1!==this.password2) this.validationErrors["password1"] = true;
+        else delete this.validationErrors["password1"];
+
+        if (!this.password2.trim()||this.password1!==this.password2) this.validationErrors["password2"] = true;
+        else delete this.validationErrors["password2"];
+
+        this.same = this.password1 === this.password2;
+      }else {
+        delete this.validationErrors["password1"];
+        delete this.validationErrors["password2"];
+      }
     if (!this.email.trim()) {
       this.validationErrors["email"] = true;
     } else {
