@@ -1,7 +1,8 @@
 import http from "../../core/services/http-common";
+import authHeader from "./auth.header";
 export class ScalerApiService{
   getAll() {
-    return http.get("/scalers");
+    return http.get("/scalers", { headers: authHeader() });
   }
 
   get(id) {
@@ -17,13 +18,13 @@ export class ScalerApiService{
     return http.post("/scalers", data);
   }
   update(id, data) {
-    return http.put(`/scalers/${id}`, data);
+    return http.put(`/scalers/${id}`, data, { headers: authHeader() });
   }
   delete(id) {
-    return http.delete(`/scalers/${id}`);
+    return http.delete(`/scalers/${id}`,{ headers: authHeader() });
   }
   findById(id) {
-    return http.get(`/scalers/${id}`);
+    return http.get(`/scalers/${id}`,{ headers: authHeader() });
   }
 
   findByEmailAndPassword(email, password) {
