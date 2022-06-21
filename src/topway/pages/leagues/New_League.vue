@@ -67,9 +67,9 @@
 </template>
 
 <script>
-import { LeagueApiService } from "../topway/services/league-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
-import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
+import { LeagueApiService } from "../../../topway/services/league-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
+import { ClimbingGymsApiService } from "../../../topway/services/climbing-gyms-api.service";
 
 export default {
   name: "New_League",

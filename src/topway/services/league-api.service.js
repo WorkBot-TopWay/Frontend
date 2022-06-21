@@ -76,6 +76,10 @@ export class LeagueApiService {
     return http.post(`/competitionleaguerankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
   }
 
+  updateRanking(competitionLeagueId, scalerId, data) {
+    return http.put(`/competitionleaguerankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
+  }
+
   findCompetitionRankingsByLeagueId(leagueId) {
     return http.get(`/competition-leagues?leagueId=${leagueId}`);
   }

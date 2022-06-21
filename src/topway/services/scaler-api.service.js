@@ -27,6 +27,10 @@ export class ScalerApiService{
     return http.get(`/scalers/${id}`,{ headers: authHeader() });
   }
 
+  findByIdAnonymous(id) {
+    return http.get(`/scalers/${id}`);
+  }
+
   findByEmailAndPassword(email, password) {
     return http.get(`/scalers?email=${email}&password=${password}`);
   }

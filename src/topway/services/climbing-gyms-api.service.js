@@ -1,7 +1,11 @@
 import http from "../../core/services/http-common";
 export class ClimbingGymsApiService {
+
   getAll() {
     return http.get("/climbing-gyms");
+  }
+  login(email, password) {
+    return http.get(`/climbing-gyms/login?email=${email}&password=${password}`);
   }
 
   findClimbingById(id) {
@@ -29,21 +33,56 @@ export class ClimbingGymsApiService {
     return http.get(`/images?climbingGymId=${id}`);
   }
 
+  createImage(climbingGymId, data) {
+    return http.post(`/images?climbingGymId=${climbingGymId}`, data);
+  }
+
+  deleteImage(id) {
+    return http.delete(`/images/${id}`);
+  }
+
   // Features of climbing gyms
   findFeatureById(id) {
     return http.get(`/features?id=${id}`);
   }
 
+  createFeature(climbingGymId,data) {
+    return http.post(`/features/${climbingGymId}`, data);
+  }
+
+  updateFeature(id, data) {
+    return http.put(`/features/${id}`, data);
+  }
   // News of climbing gyms
 
   findNewsById(id) {
     return http.get(`/news?climbingGymId=${id}`);
   }
 
+  createNews(climbingGymId, data) {
+    return http.post(`/news?climbingGymId=${climbingGymId}`, data);
+  }
+
+  deleteNews(id) {
+    return http.delete(`/news/${id}`);
+  }
+
   // News Comments of climbing gyms
 
   findCommentById(id) {
     return http.get(`/comments?climbingGymId=${id}`);
+  }
+
+  createComment(climbingGymId,scalerId, data) {
+    return http.post(`/comments?climbingGymId=${climbingGymId}&scalerId=${scalerId}`, data);
+  }
+
+  updateComment(climbingGymId,scalerId, data) {
+    return http.put(`/comments?climbingGymId=${climbingGymId}&scalerId=${scalerId}`, data);
+  }
+
+  deleteComment(climbingGymId,scalerId) {
+    return http.delete(`/comments?climbingGymId=${climbingGymId}&scalerId=${scalerId}`);
   }
 
   //Categories of climbing gyms
@@ -62,56 +101,41 @@ export class ClimbingGymsApiService {
     return http.get(`/competition-gyms?climbingGymId=${id}`);
   }
 
-// Competition ranking of climbing gyms
+  createCompetition(climbingGymId, data) {
+    return http.post(`/competition-gyms?climbingGymId=${climbingGymId}`, data);
+  }
+
+  deleteCompetition(id) {
+    return http.delete(`/competition-gyms/${id}`);
+  }
+
+  // Competition ranking of climbing gyms
   findScaleRankingByCompetitionGymId(id) {
     return http.get(`/competition-gym-rankings/${id}/scalers`);
   }
   findCompetitionRankingByCompetitionGymIdAndScalerId(competitionGymId, scalerId) {
     return http.get(`/competition-gym-rankings?competitionGymId=${competitionGymId}&scalerId=${scalerId}`);
   }
-}
-
-/*
-  //getAll() {
-    return http.get("/climbingGyms/?_embed=category_gyms");
+  createRanking(competitionGymId, scalerId, data) {
+    return http.post(`/competition-gym-rankings?competitionId=${competitionGymId}&scalerId=${scalerId}`, data);
   }
 
- // findClimbingById(id) {
-    return http.get(`/climbingGyms/${id}?_embed=category_gyms`);
+  updateRanking(competitionGymId, scalerId, data) {
+    return http.put(`/competition-gym-rankings?comtempGymId=${competitionGymId}&scalerId=${scalerId}`, data);
   }
-  //create(data) {
-    return http.post("/climbingGyms", data);
+  // Competition reservation of climbing gyms
+  createCompetitionReservation(competitionGymId,scalerId, data) {
+    return http.post(`/competition-reservation-climbers?competitionId=${competitionGymId}&scalerId=${scalerId}`, data);
   }
-  //update(id, data) {
-    return http.put(`/climbingGyms/${id}`, data);
+  findCompetitionReservationByCompetitionGymId(competitionGymId) {
+    return http.get(`/competition-reservation-climbers/${competitionGymId}/scalers`);
   }
-  //delete(id) {
-    return http.delete(`/climbingGyms/${id}`);
+  /// Category of Gym
+  createCategoryGym(climbingGymId,categoryId, data) {
+    return http.post(`/category-gyms?climbingGymId=${climbingGymId}&categoryId=${categoryId}`, data);
   }
-  findAllImagesById(id) {
-    return http.get(`/images?climbingGymId=${id}`);
-  }
-  findFeatureById(id) {
-    return http.get(`/climbingGyms/${id}/features`);
-  }
-  findNewsById(id) {
-    return http.get(`/climbingGyms/${id}/new_news`);
-  }
-  // todavia no
-  findCompetitionById(id) {
-    return http.get(`/competition_gyms/${id}?_embed=competition_gyms_ranking`);
-  }
-  findCommentById(id) {
-    return http.get(`/climbingGyms/${id}/comments`);
-  }
-  findCategoryById(id) {
-    return http.get(`climbingGyms/${id}/category_gyms`);
-  }
-  getAllCategory() {
-    return http.get("/categories");
-  }
-  findCategoryNameById(id) {
-    return http.get(`/categories/${id}`);
+
+  deleteCategoryGym(climbingGymId,categoryId) {
+    return http.delete(`/category-gyms?climbingGymId=${climbingGymId}&categoryId=${categoryId}`);
   }
 }
-* */

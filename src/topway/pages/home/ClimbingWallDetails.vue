@@ -7,7 +7,7 @@
         class="p-button-success mr-2"
         @click="myLeague(climbing_gym.name, id)"
       />
-      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning" />
+      <Button label="Competencies" icon="pi pi-flag" class="p-button-warning" @click="openRegisterCompetition()" />
     </template>
     <template #end>
       <Button
@@ -96,7 +96,7 @@
           size="xlarge"
           shape="circle"
         />
-        <span class="font text-center text-900 text-5xl font-semibold">{{
+        <span class="font text-center text-900 text-4xl font-semibold">{{
           climbing_gym.name
         }}</span>
       </div>
@@ -271,6 +271,14 @@
               "
               style="width: 80%"
             >
+              <div>
+                <Button
+                  label="Add comment"
+                  class="p-button-warning"
+                  @click="openComment()"
+                  icon="pi pi-plus"
+                />
+              </div>
               <div class="mt-3 ml-3" v-for="data of comments" :key="data">
                 <div class="flex align-content-start justify-content-start">
                   <Avatar
@@ -394,17 +402,144 @@
       </p>
     </div>
   </div>
+  <!-- Register Competition -->
+  <Dialog
+    header="Add Images"
+    v-model:visible="isOpenRegisterCompetition"
+    :style="{ width: '900px' }"
+    :modal="true"
+  >
+    <div>
+    <DataTable
+      :value="climberCompetition"
+      dataKey="id"
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      :rowsPerPageOptions="[5, 10, 15]"
+      currentPageReportTemplate="Showing {first} to {last} of {totalCompetition} request"
+      responsiveLayout="scroll"
+    >
+      <Column header="Name" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.name }}</span>
+        </template>
+      </Column>
+      <Column header="Price" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.price }}</span>
+        </template>
+      </Column>
+      <Column header="Type" sortable style="min-width: 2rem">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.type }}</span>
+        </template>
+      </Column>
+      <Column header="Action" style="min-width: 2rem">
+        <template #body="slotProps">
+          <Button
+            @click="joinInCompetition(slotProps.data.id)"
+            label="Join in"
+            class="p-button-raised p-button-success mr-2"
+          />
+          <!-- @click=" requestReject(slotProps.data.id,slotProps.data.firstName)"-->
+        </template>
+      </Column>
+    </DataTable>
+    </div>
+    <template #footer>
+      <Button
+        label="Ok"
+        icon="pi pi-check"
+        @click="closeRegisterCompetition()"
+        class="p-button-text"
+      />
+    </template>
+  </Dialog>
+  <!-- Comment -->
+  <Dialog
+    header="Compention"
+    v-model:visible="isOpenComment"
+    :style="{ width: '700px' }"
+    :modal="true"
+  >
+    <div
+      class="
+          stepsdemo-content
+          flex
+          flex-column
+          justify-content-center
+          align-items-center
+      "
+    >
+      <div class="flex justify-content-center align-items-center">
+        <Button
+          label="Update comment"
+          class="p-button-warning mr-2"
+          @click="updateComment()"
+          icon="pi pi-pencil"
+        />
+        <Button
+          @click="deleteComment()"
+          label="Remove comment"
+          icon="pi pi-trash"
+          class="p-button-raised p-button-danger"
+        />
+      </div>
 
+      <Card class="col-12 md:col-6 lg:col-10">
+        <template v-slot:title> Enter your comment </template>
+        <template v-slot:content>
+          <div class="p-fluid">
+            <!-- description -->
+            <div class="field">
+              <label for="description">Add Description</label>
+              <InputText id="description" v-model="newComment.description" />
+            </div>
+            <!-- score -->
+            <div class="field">
+              <label for="description">Add score [0-5]</label>
+              <InputNumber id="description" v-model="newComment.score" />
+            </div>
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="grid grid-nogutter justify-content-end">
+            <i></i>
+            <Button
+              label="Cancel"
+              class="p-button-danger"
+              @click="closeComment()"
+              icon="pi pi-angle-left"
+            />
+            <Button
+              label="Accept"
+              class="p-button-success ml-3"
+              @click="addComment()"
+              icon="pi pi-angle-right"
+              iconPos="right"
+            />
+          </div>
+        </template>
+      </Card>
+    </div>
+  </Dialog>
 </template>
 
 <script>
-import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
-import { ScalerApiService } from "../topway/services/scaler-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
+
+
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
+import { ScalerApiService } from "../../services/scaler-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
 export default {
   name: "ClimbingWallDetails",
   data: () => {
     return {
+      // comments
+      newComment: {},
+      isOpenComment: false,
+      ///
+      isOpenRegisterCompetition: false,
+      climberCompetition: [],
       favoriteId: 0,
       id: 0,
       cont: 0,
@@ -442,6 +577,9 @@ export default {
   },
   computed: {
     climbingGymId() {
+      if (this.localTopWay.state.userInfo.type == "ClimbingGym") {
+        return this.localTopWay.state.userInfo.id;
+      }
       return parseInt(this.$route.params.id);
     },
   },
@@ -488,28 +626,7 @@ export default {
       });
     ///////////// Competition Climbing Gym Data ////////////
     console.log("ranking");
-    /////////// Ranking Climbing Gym Data  //////////// Revision de la data
-    /*
-    this.climbing_gym_Service
-      .findCompetitionById(this.id)
-      .then((response) => {
-        this.competition = response.data;
-        console.log(this.competition);
-        this.ranking = this.competition.competition_gyms_ranking;
-        this.ranking.forEach((element) => {
-          this.scaler_Service
-            .findById(element.scalerId)
-            .then((response) => {
-              this.participants.push(response.data);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });*/
+    /////////// Ranking Climbing Gym Data  ////////////
     this.climbing_gym_Service.findCompetitionByClimbingGymId(this.id).then((response) => {
       this.nameCompetition = response.data;
       this.nameSelected = this.nameCompetition[this.nameCompetition.length - 1];
@@ -549,8 +666,112 @@ export default {
 
         console.log(this.favorite, "Favorite");
       });
+    /////////////// Competitions ///////////////////
+    this.climbing_gym_Service.findCompetitionByClimbingGymId(this.id).then((response) => {
+      this.climberCompetition = response.data;
+      console.log(this.climberCompetition, "Competitions");
+    });
+
   },
   methods: {
+    /////////// Comments Climbing Gym Data  ////////////
+    openComment() {
+      this.newComment = {};
+      if (this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler") {
+        this.isOpenComment = true;
+      } else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
+      }else {
+        alert("Please Login First");
+      }
+    },
+    closeComment() {
+      this.isOpenComment = false;
+    },
+    addComment() {
+      if (this.newComment.score >= 0 && this.newComment.score <= 5) {
+      let data ={};
+      if (this.newComment.description != ""||this.newComment.description != null) {
+        data.description ="none";
+      }else{
+        data.description = this.newComment.description;
+      }
+      data.score = this.newComment.score;
+      data.date = new Date();
+      this.climbing_gym_Service
+        .createComment(this.id,this.localTopWay.state.userInfo.id, data)
+        .then((response) => {
+          console.log(response, "Comment");
+          this.newComment = {};
+          alert("Comment Added");
+          this.isOpenComment = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("You have already commented");
+        });}else{
+          alert("Please enter a score between 0 and 5");
+        }
+    },
+    deleteComment() {
+      this.climbing_gym_Service
+        .deleteComment(this.id, this.localTopWay.state.userInfo.id).then((response) => {
+          console.log(response, "Comment");
+          alert("Comment Deleted");
+          this.newComment = {};
+          this.isOpenComment = false;
+        }).catch((e) => {
+          console.log(e);
+          alert("You do not have any comments");
+        });
+    },
+    updateComment() {
+      let data ={};
+      data.description = this.newComment.description;
+      data.score = this.newComment.score;
+      data.date = new Date();
+      this.climbing_gym_Service
+        .updateComment(this.id,this.localTopWay.state.userInfo.id, data)
+        .then((response) => {
+          console.log(response, "Comment");
+          this.newComment = {};
+          alert("Comment Updated");
+          this.isOpenComment = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("No comment found");
+        });
+    },
+    //////////////////////
+    joinInCompetition(CompetitionId) {
+      let data ={};
+      data.status = "pending";
+      this.climbing_gym_Service.createCompetitionReservation(CompetitionId, this.localTopWay.state.userInfo.id,data).then((response) => {
+        this.userCompetition = response.data;
+        console.log(this.userCompetition, "Competition");
+        alert("You have gone to this competition successfully");
+      }).catch((e) => {
+        console.log(e);
+        alert("You already joined in this competition");
+      });
+    },
+    openRegisterCompetition() {
+      if (this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler") {
+        if(this.climberCompetition.length > 0) {
+          this.isOpenRegisterCompetition = true;
+        }else {
+          alert("No competitions available");
+        }
+      }else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
+      }else {
+        alert("Please Login First");
+      }
+    },
+    closeRegisterCompetition() {
+      this.isOpenRegisterCompetition = false;
+    },
     convertDate(date) {
       let dateHour = new Date(date);
       let dateMinute = new Date(date);
@@ -579,23 +800,29 @@ export default {
       return true;
     },
     myLeague(name, id) {
-      if (this.localTopWay.state.isLogin) {
+      if (this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler") {
         this.$router.push(`/${name}/${id}/MyLeagues`);
-      } else {
+      }else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
+      }else {
         alert("Please Login First");
       }
     },
     newLeague(name, id) {
-      if (this.localTopWay.state.isLogin) {
+      if (this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler") {
         this.$router.push(`/NewLeague/${name}/${id}`);
-      } else {
+      }else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
+      }else {
         alert("Please Login First");
       }
     },
     joinLeague(name, id) {
-      if (this.localTopWay.state.isLogin) {
+      if (this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler") {
         this.$router.push(`/${name}/${id}/JoinLeague`);
-      } else {
+      } else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
+      }else {
         alert("Please Login First");
       }
     },
@@ -608,13 +835,14 @@ export default {
         return false;
     },
     follow() {
-      if(this.localTopWay.state.isLogin){
-        let follow = {
-        };
+      if(this.localTopWay.state.isLogin&&this.localTopWay.state.userInfo.type == "Scaler"){
+        let follow = {};
         this.scaler_Service.createFavorite(this.id,this.localTopWay.state.userInfo.id,follow).then((response) => {
           console.log(response.data);
           this.$router.go(0);
         });
+      }else if(this.localTopWay.state.userInfo.type == "ClimbingGym"){
+        alert("You are in view mode");
       }else {
         alert("Please Login First");
       }

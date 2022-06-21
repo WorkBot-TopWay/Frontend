@@ -2,15 +2,13 @@ import Vuex from 'vuex'
 export const store = new Vuex.Store({
     state: {
         id:0,
-        first_name: '',
-        last_name: '',
-        email: 0,
+        firstName: '',
+        lastName: '',
+        email: '',
         password: "",
         district: '',
         address: '',
-        url_photo: '',
-        phone: 0,
-        type: '',
-        isLogin: false
+        urlPhoto: '',
+        phone: '',
     }
 });

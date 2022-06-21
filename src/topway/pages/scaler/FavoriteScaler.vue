@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
-import { ScalerApiService } from "../topway/services/scaler-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
+import { ScalerApiService } from "../../services/scaler-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
 
 export default {
   name: "FavoriteScaler",

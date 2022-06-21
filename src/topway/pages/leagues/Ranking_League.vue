@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
-import { LeagueApiService } from "../topway/services/league-api.service";
-import { ScalerApiService } from "../topway/services/scaler-api.service";
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
+import { LeagueApiService } from "../../services/league-api.service";
+import { ScalerApiService } from "../../services/scaler-api.service";
 
 export default {
   name: "Ranking_League",

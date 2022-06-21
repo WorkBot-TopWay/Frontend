@@ -164,8 +164,8 @@
 </template>
 
 <script>
-import { ScalerApiService } from "../topway/services/scaler-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
+import { ScalerApiService } from "../../services/scaler-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
 
 export default {
   name: "My_Profile",
@@ -202,7 +202,6 @@ export default {
   mounted() {
     this.email= this.localTopWay.state.userInfo.email;
     this.phone = this.localTopWay.state.userInfo.phone;
-    this.password = "";
     this.first_name = this.localTopWay.state.userInfo.firstName;
     this.last_name = this.localTopWay.state.userInfo.lastName;
     this.districtSelected = {name:this.localTopWay.state.userInfo.district, value:this.localTopWay.state.userInfo.district};

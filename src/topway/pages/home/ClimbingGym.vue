@@ -46,7 +46,7 @@
         </template>
 
         <template #content>
-          <Rating v-model="val" :cancel="false" />
+          <Rating v-model="gym.score" :cancel="false" />
         </template>
 
         <template #subtitle>
@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import { ClimbingGymsApiService } from "../topway/services/climbing-gyms-api.service";
-import { store } from "../store";
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
+import { store } from "../../../store";
 
 export default {
   name: "ClimbingGym",
@@ -79,6 +79,8 @@ export default {
       store: store,
       status: false,
       category: [],
+      comments: [],
+      AverageRating: 0,
       climbing_gyms: [],
       gyms: [],
       climbing_gym: {},
@@ -169,12 +171,25 @@ export default {
 
     this.climbing_gym_Service.getAll().then((response) => {
       this.climbing_gyms = response.data;
-      console.log(this.climbing_gyms);
+      this.climbing_gyms.forEach((element) => {
+        this.climbing_gym_Service
+          .findCommentById(element.id)
+          .then(response =>{
+            this.comments = response.data;
+            if (this.comments.length > 0) {
+              element.score =
+                this.comments.reduce((acc, cur) => acc + cur.score, 0) /
+                this.comments.length;
+            } else {
+              element.score = 0;
+            }
+            console.log(this.comments, "Comments");
+          });
+      });
       console.log(this.climbing_gyms);
     });
     this.climbing_gym_Service.getAllCategory().then((response) => {
       this.category = response.data;
-      console.log(this.category);
     });
   },
   methods: {

@@ -58,10 +58,11 @@
 </template>
 
 <script>
-import { ScalerApiService } from "../topway/services/scaler-api.service";
-import { store } from "../store";
+import { ScalerApiService } from "../../services/scaler-api.service";
+import { store } from "../../../store";
 import { useToast } from "primevue/usetoast";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
 
 export default {
   name: "LogIn",
@@ -73,6 +74,7 @@ export default {
       submitted: false,
       validationErrors: {},
       scaler_Service: new ScalerApiService(),
+      climbing_gym_Service: new ClimbingGymsApiService(),
       user: [],
       email: "",
       re: "",
@@ -99,7 +101,18 @@ export default {
               }
             }).catch((err) => {
               console.log(err, "errorn here");
-            alert("Invalid email or password");
+            // Modificar mas tarde
+            this.climbing_gym_Service.login(encodeURIComponent(this.email),encodeURIComponent(this.password)).then(res=>{
+              console.log(res);
+              this.localTopWay.state.isLogin = true;
+              this.localTopWay.state.userInfo =res.data;
+              localStorage.user = JSON.stringify(res.data);
+              this.$router.push(`/climbing-gym`);
+            }).catch(err=>{
+              console.log(err);
+              alert("Invalid email or password");
+            })
+            ///////////////
             this.validationErrors.email = true;
             this.validationErrors.password = true;
             this.submitted = false;

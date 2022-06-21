@@ -74,10 +74,9 @@
 </template>
 
 <script>
-import { ScalerApiService } from "../topway/services/scaler-api.service";
+import { ScalerApiService } from "../../services/scaler-api.service";
 
-import { store } from "../store";
-import { useToast } from "primevue/usetoast";
+import { store } from "../../../store";
 
 export default {
   name: "SingUp",
@@ -113,12 +112,14 @@ export default {
       this.submitted = true;
       if (this.validateForm()) {
         console.log("Todo bien");
-        this.store.state.id = this.id;
         this.store.state.password = this.password;
         this.store.state.email = this.email;
-        this.store.state.type = this.selectedType.type;
-
-        this.$router.push("/singUpClimber");
+        if(this.selectedType.name==="Climber"){
+          this.$router.push("/singUpClimber");
+        }
+        if(this.selectedType.name ==="Climbing Gym"){
+          this.$router.push("/singUpClimberGym");
+        }
       }
     },
     validateForm() {

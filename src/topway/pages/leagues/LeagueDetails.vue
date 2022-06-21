@@ -140,6 +140,12 @@
           style="height: 2.5rem; width: 8rem"
           @click="leagueCompetitionsData()"
         />
+        <Button
+          label="Edit ranking"
+          icon="pi pi-pencil"
+          class="p-button-warning ml-2"
+          @click="openEditCompetence()"
+        />
       </div>
       <DataTable
         :value="userCompetition"
@@ -210,8 +216,7 @@
           <Column header="Name" sortable style="min-width: 2rem">
             <template #body="slotProps">
               <span
-                >{{ slotProps.data.firstName }}
-                {{ slotProps.data.lastName }}</span
+                >{{ slotProps.data.fullName }}</span
               >
             </template>
           </Column>
@@ -302,18 +307,83 @@
         </Card>
       </div>
     </Dialog>
+    <!-- Edit competitions -->
+    <Dialog
+      header="Update score"
+      v-model:visible="isOpenEditCompetence"
+      :style="{ width: '700px' }"
+      :modal="true"
+    >
+      <div
+        class="
+          stepsdemo-content
+          flex
+          flex-column
+          justify-content-center
+          align-items-center
+      "
+      >
+        <Card class="col-12 md:col-6 lg:col-10">
+          <template v-slot:title> Enter your update score </template>
+          <template v-slot:content>
+            <div class="p-fluid">
+              <!-- User -->
+              <div class="field">
+                <label for="class">Select participant</label>
+                <Dropdown
+                  inputId="class"
+                  v-model="selectedRanking"
+                  :options="userCompetition"
+                  @change="setType($event)"
+                  optionLabel="fullName"
+                  placeholder="Select a name"
+                />
+                <div class="field mt-3">
+                  <label for="description">New score</label>
+                  <InputNumber id="description" v-model="alreadyScore" />
+                </div>
+              </div>
+              <!-- Score -->
+            </div>
+          </template>
+          <template v-slot:footer>
+            <div class="grid grid-nogutter justify-content-end">
+              <i></i>
+              <Button
+                label="Cancel"
+                class="p-button-danger"
+                @click="closeEditCompetence()"
+                icon="pi pi-angle-left"
+              />
+              <Button
+                label="Accept"
+                class="p-button-success ml-3"
+                @click="saveUpdateScore()"
+                icon="pi pi-angle-right"
+                iconPos="right"
+              />
+            </div>
+          </template>
+        </Card>
+      </div>
+    </Dialog>
   </div>
 </template>
 
 <script>
-import { LeagueApiService } from "../topway/services/league-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
-import { ScalerApiService } from "../topway/services/scaler-api.service";
+import { LeagueApiService } from "../../services/league-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
+import { ScalerApiService } from "../../services/scaler-api.service";
 
 export default {
   name: "LeagueDetails",
   data: () => {
     return {
+      /// Edit competences
+      selectedRanking: {},
+      alreadyScore:0,
+      isOpenEditCompetence: false,
+      ////
       flag: true,
       leagues: {},
       newLeague: {},
@@ -360,6 +430,9 @@ export default {
 
     this.league_service.findScalersByLeagueId(this.leagueId).then((response) => {
       this.users = response.data;
+      this.users.forEach((user) => {
+        user.fullName = user.firstName + " " + user.lastName;
+      });
       console.log(this.users, "users");
     });
       // Request League
@@ -452,14 +525,6 @@ export default {
         });
       }
     },
-    findRequest(id) {
-      for (let index of this.requestLeague) {
-        if (index.scalerId === id) {
-          return index.id;
-        }
-      }
-      return 0;
-    },
     async leaveLeague() {
       let index = confirm(`Are you sure you want to leave this league?`);
       if (index) {
@@ -471,7 +536,7 @@ export default {
     },
     async deleteMember(id) {
       let index = confirm(`Are you sure?`);
-      if (index && id !== this.leagueId.scalerId) {
+      if (index && id !== this.leagues.scalerId) {
           this.league_service.deleteClimberLeagues(this.leagues.climbingGymId, id, this.leagues.id).then((response) => {
             console.log(response, "response delete climber league");
             this.$router.go(0);
@@ -497,6 +562,9 @@ export default {
      this.league_service.findScalersByCompetitionLeagueId(this.nameSelected.id).then((response) => {
      this.userCompetition = response.data;
       this.userCompetition.forEach((response) => {
+        this.userCompetition.forEach((response) => {
+          response.fullName = response.firstName + " " + response.lastName;
+        });
         this.league_service.findCompetitionLeagueByCompetitionLeagueIdAndScalerId(this.nameSelected.id, response.id).then((info) => {
           response.score=info.data.score;
         });
@@ -504,6 +572,35 @@ export default {
       console.log(this.userCompetition, "userCompetition");
      });
     },
+    //////// function edit
+    openEditCompetence() {
+      this.isOpenEditCompetence = true;
+    },
+    closeEditCompetence() {
+      this.isOpenEditCompetence = false;
+    },
+    // edit competence function
+    saveUpdateScore() {
+      let data = {};
+      data.score = this.alreadyScore;
+      console.log(this.nameSelected.id, "nameSelected.id", this.selectedRanking.id, "selectedRanking.id", data, "data");
+      this.league_service.updateRanking(this.nameSelected.id,this.selectedRanking.id,data).then((response) => {
+        console.log(response, "response");
+        alert("Update success");
+        this.isOpenEditCompetence = false;
+        this.alreadyScore = 0;
+      }).catch((error) => {
+        alert("Please fill in all the fields");
+        console.log(error, "error");
+        this.alreadyScore = 0;
+      });
+    },
+  //// categories select
+  setType(event) {
+    if (this.selectedType && event.value) {
+      this.selectedType = event.value;
+    }
+  },
   },
 };
 </script>

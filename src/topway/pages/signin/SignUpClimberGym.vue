@@ -6,42 +6,27 @@
       justify-content-center
       align-items-center
       bg-black-alpha-10
+
     "
-    style="height: 120vh"
   >
-    <Card class="col-12 md:col-6 lg:col-10">
+    <Card class="col-12 md:col-6 lg:col-10 mt-5 mb-5">
       <template v-slot:title> Personal Information </template>
       <template v-slot:subtitle> Enter your personal information</template>
       <template v-slot:content>
         <div class="p-fluid">
           <div class="field">
-            <label for="first_name">First Name</label>
+            <label for="Name">Name</label>
             <InputText
-              id="first_name"
-              v-model="first_name"
-              :class="{ 'p-invalid': validationErrors.first_name && submitted }"
+              id="Name"
+              v-model="Name"
+              :class="{ 'p-invalid': validationErrors.Name && submitted }"
             />
             <small
-              v-show="validationErrors.first_name && submitted"
+              v-show="validationErrors.Name && submitted"
               class="p-error"
-              >first name is required.</small
+            >Name is required.</small
             >
           </div>
-
-          <div class="field">
-            <label for="last_name">Last Name</label>
-            <InputText
-              id="last_name"
-              v-model="last_name"
-              :class="{ 'p-invalid': validationErrors.last_name && submitted }"
-            />
-            <small
-              v-show="validationErrors.last_name && submitted"
-              class="p-error"
-              >last name is required.</small
-            >
-          </div>
-
           <div class="field">
             <label for="address">Address</label>
             <InputText
@@ -52,7 +37,7 @@
             <small
               v-show="validationErrors.address && submitted"
               class="p-error"
-              >address is required.</small
+            >address is required.</small
             >
           </div>
 
@@ -66,7 +51,7 @@
             <small
               v-show="validationErrors.url_photo && submitted"
               class="p-error"
-              >url photo is required.</small
+            >url photo is required.</small
             >
           </div>
 
@@ -84,7 +69,7 @@
               <small
                 v-show="validationErrors.districtSelected && submitted"
                 class="p-error"
-                >district you to select one</small
+              >district you to select one</small
               >
             </div>
           </div>
@@ -98,7 +83,7 @@
               :class="{ 'p-invalid': validationErrors.phone && submitted }"
             />
             <small v-show="validationErrors.phone && submitted" class="p-error"
-              >phone is required.</small
+            >phone is required.</small
             >
           </div>
         </div>
@@ -119,16 +104,17 @@
 </template>
 
 <script>
-import { store } from "../store";
-import { ScalerApiService } from "../topway/services/scaler-api.service";
+import { store } from "../../../store";
+import { ClimbingGymsApiService } from "../../services/climbing-gyms-api.service";
+
 export default {
-  name: "SingUpClimber",
+  name: "SignUpClimberGym",
   data: () => {
     return {
       info: [],
       store: store,
       last_name: "",
-      first_name: "",
+      Name: "",
       districtSelected: "",
       address: "",
       submitted: false,
@@ -147,10 +133,10 @@ export default {
       ],
       url_photo: "",
       phone: 0,
-      scaler_Service: new ScalerApiService(),
+      climbing_gym_Service: new ClimbingGymsApiService(),
       newClimber: {
         id: 0,
-        first_name: "",
+        Name: "",
         last_name: "",
         email: 0,
         password: "",
@@ -181,18 +167,17 @@ export default {
       console.log(this.districtSelected.value);
       if (this.validateForm()) {
         let data ={};
-        data.firstName = this.first_name;
-        data.lastName = this.last_name;
+        data.name = this.Name;
         data.password = this.store.state.password;
         data.email= this.store.state.email;
         data.city= "Lima";
         data.district= this.districtSelected.value;
         data.address= this.address;
         data.phone= String(this.phone);
-        data.urlPhoto= this.url_photo;
+        data.logoUrl= this.url_photo;
         this.createClimbing(data);
         console.log(data);
-        this.$router.push("/");
+        this.$router.push("/LogIn");
       }
     },
     prevPag() {
@@ -203,11 +188,8 @@ export default {
         this.validationErrors["districtSelected"] = true;
       else delete this.validationErrors["districtSelected"];
 
-      if (!this.first_name.trim()) this.validationErrors["first_name"] = true;
-      else delete this.validationErrors["first_name"];
-
-      if (!this.last_name.trim()) this.validationErrors["last_name"] = true;
-      else delete this.validationErrors["last_name"];
+      if (!this.Name.trim()) this.validationErrors["Name"] = true;
+      else delete this.validationErrors["Name"];
 
       if (!this.address.trim()) this.validationErrors["address"] = true;
       else delete this.validationErrors["address"];
@@ -228,14 +210,15 @@ export default {
       }
     },
     createClimbing(climber) {
-      this.scaler_Service
-        .signUp(climber)
+      this.climbing_gym_Service
+        .create(climber)
         .then((response) => {
           console.log(response);
-          alert(`${response.data.message}`);
+          alert("Registered Successfully");
         })
         .catch((e) => {
           console.log(e);
+          alert("Please complete all fields");
         });
     },
   },
@@ -243,4 +226,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

@@ -1,19 +1,22 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
-import ClimbingGym from "../components/ClimbingGym.vue"
-import ClimbingWallDetails from "../components/ClimbingWallDetails.vue";
-import SingUp from "../components/SingUp.vue";
-import SignUpClimber from "../components/SignUpClimber.vue";
-import LogIn from "../components/LogIn.vue";
-import My_Leagues from "../components/My_Leagues.vue";
-import Join_League from "../components/Join_League.vue";
-import LeagueDetails from "../components/LeagueDetails.vue";
-import New_League from "../components/New_League.vue";
-import Ranking_League from "../components/Ranking_League.vue";
-import FavoriteScaler from "../components/FavoriteScaler.vue";
-import FormNews from "../components/FormNews.vue";
-import My_Profile from "../components/My_Profile.vue";
+import ClimbingGym from "../topway/pages/home/ClimbingGym.vue"
+import ClimbingWallDetails from "../topway/pages/home/ClimbingWallDetails.vue";
+import SingUp from "../topway/pages/signin/SingUp.vue";
+import SignUpClimber from "../topway/pages/signin/SignUpClimber.vue";
+import LogIn from "../topway/pages/login/LogIn.vue";
+import Join_League from "../topway/pages/leagues/Join_League.vue";
+import LeagueDetails from "../topway/pages/leagues/LeagueDetails.vue";
+import Ranking_League from "../topway/pages/leagues/Ranking_League.vue";
+import FavoriteScaler from "../topway/pages/scaler/FavoriteScaler.vue";
+import My_Profile from "../topway/pages/scaler/My_Profile.vue";
+import ClimbingGymHome from "../topway/pages/gym/ClimbingGymHome.vue";
+import New_League from "../topway/pages/leagues/New_League.vue";
+import ClimbingGymRanking from "../topway/pages/gym/ClimbingGymRanking.vue";
+import My_Leagues from "../topway/pages/leagues/My_Leagues.vue";
+import SignUpClimberGym from "../topway/pages/signin/SignUpClimberGym.vue";
+import Gym_Profile from "../topway/pages/gym/Gym_Profile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +42,14 @@ const router = createRouter({
       path: '/singUpClimber',
       name: 'singUpClimber',
       component: SignUpClimber
-    },
+    }
+    ,
+    {
+      path: '/singUpClimberGym',
+      name: 'singUpClimberGym',
+      component: SignUpClimberGym
+    }
+    ,
     {
       path: '/LogIn',
       name: 'LogIn',
@@ -76,15 +86,31 @@ const router = createRouter({
       component: FavoriteScaler
     },
     {
-      path:'/News',
-      name:'News',
-      component: FormNews
+      path:'/MyProfile',
+      name: "MyProfile",
+      component: My_Profile
     },
     {
-    path:'/MyProfile',
-    name:'MyProfile',
-    component: My_Profile
+      path:'/climbing-gym',
+      name:'ClimbingGymHome',
+      component: ClimbingGymHome
+    },
+    {
+      path:'/:name/competition/:id',
+      name:'RankingCompetition',
+      component: ClimbingGymRanking
+    },
+    {
+      path:'/ViewMode',
+      name:'ViewMode',
+      component: ClimbingWallDetails
+    },
+    {
+      path:'/Profile',
+      name: "Profile",
+      component: Gym_Profile
     }
+
     /* ,
     {
       path: '/about',

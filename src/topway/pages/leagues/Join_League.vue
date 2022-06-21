@@ -68,11 +68,20 @@
       </Card>
     </div>
   </div>
+  <div
+    v-else
+    class="flex justify-content-start align-items-center mt-5 flex-column"
+  >
+    <span class="font text-2xl mb-4"
+    >At the moment there is no league, be the first to create one</span
+    >
+    <Button @click="previousPage" label="Primary"> To accept </Button>
+  </div>
 </template>
 
 <script>
-import { LeagueApiService } from "../topway/services/league-api.service";
-import { LocalStoreTopWay } from "../LocalStore/LocalStoreTopWay";
+import { LeagueApiService } from "../../services/league-api.service";
+import { LocalStoreTopWay } from "../../../LocalStore/LocalStoreTopWay";
 
 export default {
   name: "Join_League",
@@ -112,28 +121,7 @@ export default {
       }
     },
   },
-  created() {/*
-    this.league_service
-      .findAllLeaguesByClimbingGymId(this.climbingGymId)
-      .then((response) => {
-        this.listUserLeagues = response.data;
-        console.log(this.listUserLeagues);
-      });
-    this.league_service
-      .findLeagueByClimbingGymId(this.climbingGymId)
-      .then((response) => {
-        this.LeaguesTheGym = response.data;
-      });
-    this.league_service.getAllRequests().then((response) => {
-      this.idRequest = response.data;
-      console.log(this.idRequest, "idRequest");
-    });
-    this.league_service
-      .findRequestsByScalerId(this.localTopWay.state.userInfo.id)
-      .then((response) => {
-        this.request = response.data;
-      });*/
-
+  created() {
     //Load all leagues by climbing gym id
     this.league_service
       .findLeagueByClimbingGymId(this.climbingGymId)
@@ -148,9 +136,11 @@ export default {
     this.league_service.findRequestsLeagueByScalerId(this.localTopWay.state.userInfo.id).then((response) => {
       this.requests = response.data;
     });
-
   },
   methods: {
+    previousPage() {
+      this.$router.go(-1);
+    },
     youAreAlreadyAMember() {
       alert("You are already a member");
     },
@@ -204,4 +194,9 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,500&display=swap");
+
+.font {
+  font-family: "Open Sans", sans-serif;
+}
 </style>

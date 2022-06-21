@@ -9,22 +9,23 @@
 
 
         <template #end>
-          <div v-if="localTopWay.state.isLogin"
-            class="flex justify-content-center align-items-center m-1"
+          <div v-if="localTopWay.state.isLogin" class="flex justify-content-center align-items-center ali m-1"
             style="width: 100%"
           >
+            <div v-if="this.localTopWay.state.userInfo.type=='Scaler'">
             <Button icon="pi pi-refresh" class="p-button-sm p-button-rounded p-button-secondary"  @click="getNotifications()"/>
             <Button v-if="isTrue" icon="pi pi-circle-fill" class="p-button-rounded p-button-help p-button-text text-xs" />
             <Button v-else icon="pi pi-circle" class="p-button-rounded p-button-info p-button-text text-xs" />
             <Button icon="pi pi-bell" class="p-button-rounded p-button-info mr-4"  @click="openNotifications()"/>
+            </div>
 
             <Avatar
-              :image="localTopWay.state.userInfo.urlPhoto"
+              :image="urlPhoto(localTopWay.state.userInfo)"
               class="mr-2"
               size="xlarge"
               shape="circle"
             />
-            <span class="text-center text-900  font-semibold">{{localTopWay.state.userInfo.firstName }} {{localTopWay.state.userInfo.lastName }}</span>
+            <span class="text-center text-900  font-semibold">{{nameUser(localTopWay.state.userInfo)}}</span>
           </div>
         </template>
       </Menubar>
@@ -119,19 +120,52 @@ export default {
             localStorage.clear();
           },
           url: 'https://topway-bd33d.web.app/' //cambia a la ruta del servidor
+        },
+        {
+          label: 'View mode',
+          icon: 'pi pi-fw pi-eye',
+          visible:false,
+          to: '/ViewMode',
+        },
+        {
+          label: 'Home',
+          icon: 'pi pi-fw pi-home',
+          visible:false,
+          to: '/climbing-gym'
+        }
+        ,
+        {
+          label:'Profile',
+          icon:'pi pi-fw pi-user',
+          to:'/Profile',
+          visible: false
         }]
     }
   },
   watch: {
     localTopWay: {
       handler: function () {
-        if (this.localTopWay.state.isLogin) {
+        if (this.localTopWay.state.userInfo.type==="Scaler") {
           this.items[1].visible=true
           this.items[2].visible=true
           this.items[3].visible=false
           this.items[4].visible=false
           this.items[5].visible=true
+          this.items[6].visible=false
+          this.items[7].visible=false
+          this.items[8].visible=false
+          console.log(this.localTopWay.state.userInfo)
           this.getNotifications();
+        }else {
+          this.items[0].visible=false
+          this.items[1].visible=false
+          this.items[2].visible=false
+          this.items[3].visible=false
+          this.items[4].visible=false
+          this.items[5].visible=true
+          this.items[6].visible=true
+          this.items[7].visible=true
+          this.items[8].visible=true
         }
       },
       deep: true
@@ -154,6 +188,20 @@ export default {
     this.isLogin();
   },
   methods:{
+    nameUser(data){
+      if(data.type=='Scaler'){
+        return data.firstName + ' ' + data.lastName
+      }else {
+        return data.name
+      }
+    },
+    urlPhoto(data){
+      if(data.type=='Scaler'){
+        return data.urlPhoto
+      }else {
+        return data.logoUrl
+      }
+    },
     isLogin() {
       this.status= this.localTopWay.state.isLogin
       console.log(this.localTopWay.state.isLogin,"Arrival here")
