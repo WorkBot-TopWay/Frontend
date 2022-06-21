@@ -318,7 +318,7 @@
               </p>
               <Button
                 label="Add comment"
-                class="p-button-warning"
+                class="p-button-warning mt-3"
                 @click="openComment()"
                 icon="pi pi-plus"
               />
@@ -697,7 +697,7 @@ export default {
     addComment() {
       if (this.newComment.score >= 0 && this.newComment.score <= 5) {
       let data ={};
-      if (this.newComment.description != ""||this.newComment.description != null) {
+      if (this.newComment.description === ""||this.newComment.description === null) {
         data.description ="none";
       }else{
         data.description = this.newComment.description;
