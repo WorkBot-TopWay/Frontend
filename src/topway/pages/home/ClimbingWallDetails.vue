@@ -827,7 +827,7 @@ export default {
       }
     },
     listFavorites() {
-          if (this.informationObject(this.favorite)) {
+          if (this.informationObject(this.favorite)&&this.localTopWay.state.userInfo.type == "Scaler") {
             console.log(this.favorite, "Favorite true");
             return true;
         }
