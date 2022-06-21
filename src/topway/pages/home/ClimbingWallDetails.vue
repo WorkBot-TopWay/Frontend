@@ -312,10 +312,16 @@
               </div>
             </div>
 
-            <div v-else>
+            <div v-else class="flex flex-column justify-content-center align-items-center">
               <p class="font text-justify text-base font-semibold">
                 Does not contain comments
               </p>
+              <Button
+                label="Add comment"
+                class="p-button-warning"
+                @click="openComment()"
+                icon="pi pi-plus"
+              />
             </div>
           </div>
         </TabPanel>
