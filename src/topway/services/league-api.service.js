@@ -73,11 +73,11 @@ export class LeagueApiService {
 
   /////// Competitions Ranking///////////////
   createCompetitionRankings(competitionLeagueId, scalerId, data) {
-    return http.post(`/competitionleaguerankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
+    return http.post(`/competition-league-rankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
   }
 
   updateRanking(competitionLeagueId, scalerId, data) {
-    return http.put(`/competitionleaguerankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
+    return http.put(`/competition-league-rankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`, data);
   }
 
   findCompetitionRankingsByLeagueId(leagueId) {
@@ -89,7 +89,7 @@ export class LeagueApiService {
   }
 
   findCompetitionLeagueByCompetitionLeagueIdAndScalerId(competitionLeagueId, scalerId) {
-    return http.get(`/competitionleaguerankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`);
+    return http.get(`/competition-league-rankings?competitionLeagueId=${competitionLeagueId}&scalerId=${scalerId}`);
   }
 
   //Requests League Ranking

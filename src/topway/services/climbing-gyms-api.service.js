@@ -88,7 +88,7 @@ export class ClimbingGymsApiService {
   //Categories of climbing gyms
 
   findCategoryByClimbingGymId(id) {
-    return http.get(`/category-gyms/${id}/categories`);
+    return http.get(`/climbing-gyms/categories/${id}/categories`);
   }
 
   getAllCategory() {
@@ -132,10 +132,10 @@ export class ClimbingGymsApiService {
   }
   /// Category of Gym
   createCategoryGym(climbingGymId,categoryId, data) {
-    return http.post(`/category-gyms?climbingGymId=${climbingGymId}&categoryId=${categoryId}`, data);
+    return http.post(`/climbing-gyms/categories?climbingGymId=${climbingGymId}&categoryId=${categoryId}`, data);
   }
 
   deleteCategoryGym(climbingGymId,categoryId) {
-    return http.delete(`/category-gyms?climbingGymId=${climbingGymId}&categoryId=${categoryId}`);
+    return http.delete(`/climbing-gyms/categories?climbingGymId=${climbingGymId}&categoryId=${categoryId}`);
   }
 }
